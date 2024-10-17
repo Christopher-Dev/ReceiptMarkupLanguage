@@ -30,10 +30,7 @@ jobs:
         run: |
           dotnet restore ./RmlEditorWeb/RmlEditorWeb.csproj
           dotnet publish ./RmlEditorWeb/RmlEditorWeb.csproj --configuration Release --output ./build_output
-      
-      - name: Update base href
-        run: sed -i 's|<base href="/" />|<base href="/ReceiptMarkupLanguage/" />|' ./build_output/wwwroot/index.html 
-      
+            
       - name: Setup Pages
         uses: actions/configure-pages@v5
       
