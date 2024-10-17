@@ -1,0 +1,13 @@
+﻿/* Top Bar: Fixed height */
+.top-bar {
+    height: 64px; /* Fixed height for the top bar */
+    background-color: #213445; /* Background color */
+    color: white; /* Text color */
+    display: flex;
+    gap: 10px; /* Increased gap for more definition */
+    align-items: center; /* Center buttons vertically */
+    padding: 0 20px; /* Horizontal padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    justify-content: flex-end; /* Align buttons to the far right */
+    flex-shrink: 0; /* Prevent shrinking */
+}
