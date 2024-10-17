@@ -1,0 +1,76 @@
+﻿<MudDialog>
+    <TitleContent>
+        <!-- Title -->
+        <MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true">
+            Repeater Key Pairs
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <!-- Search Bar -->
+
+        <MudStack Justify="Justify.SpaceBetween" Row="true" AlignItems="AlignItems.Center" Style="margin-bottom: 1rem;">
+
+            <MudButton Variant="Variant.Outlined" OnClick="AddNewKeyPair" Ripple="true">Add Key Pair</MudButton>
+
+
+            <div style="max-width: 50%;">
+                <MudTextField T="string" Label="Search" Placeholder="Search keys or values" @bind-Value="searchTerm" Immediate="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </div>
+
+        </MudStack>
+
+        <!-- Fixed height scrollable content area -->
+        <div style="height: 250px; overflow-y: auto; margin-top: 1rem;">
+            @foreach (var pair in FilteredKeyPairs())
+            {
+                <MudStack Style="margin-bottom: 0.5rem;" AlignItems="AlignItems.Center" Justify="Justify.Center" Row="true" Spacing="2">
+                    <!-- Input Fields for each pair -->
+                    <MudTextField T="string" Value="pair.Key" Label="Key" Placeholder="ExampleKey" Variant="Variant.Outlined" FullWidth="true" Margin="Margin.Dense" />
+                    <MudTextField T="string" Value="pair.Value" Label="Value" Placeholder="ExampleValue" Variant="Variant.Outlined" FullWidth="true" Margin="Margin.Dense" />
+                </MudStack>
+            }
+        </div>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Tertiary" OnClick="Save">Update</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    private List<KeyValuePair<string, string>> keyPairs = new List<KeyValuePair<string, string>> {
+        new KeyValuePair<string, string>("", "")
+    };
+
+    private string searchTerm = string.Empty;
+
+    private void AddNewKeyPair()
+    {
+        keyPairs.Add(new KeyValuePair<string, string>("", ""));
+    }
+
+    private IEnumerable<KeyValuePair<string, string>> FilteredKeyPairs()
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+            return keyPairs;
+
+        return keyPairs.Where(pair =>
+            (!string.IsNullOrEmpty(pair.Key) && pair.Key.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+            (!string.IsNullOrEmpty(pair.Value) && pair.Value.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+        );
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+
+    private void Save()
+    {
+        MudDialog.Close(DialogResult.Ok(keyPairs));
+    }
+}

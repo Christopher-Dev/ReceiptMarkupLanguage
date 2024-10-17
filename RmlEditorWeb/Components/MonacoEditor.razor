@@ -1,0 +1,66 @@
+﻿@inject IJSRuntime JS
+@implements IDisposable
+
+<div id="@EditorId" class="monaco-editor-container"></div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    // New EventCallback parameter
+    [Parameter]
+    public EventCallback<string> OnCodeChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnValidation { get; set; }
+
+    public bool isCodeValid;
+
+    private string EditorId = $"editor_{Guid.NewGuid()}";
+    private DotNetObjectReference<MonacoEditor> _objectReference;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _objectReference = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("initializeMonaco", EditorId, Code, _objectReference);
+        }
+    }
+
+    // Implement IDisposable to clean up the DotNetObjectReference
+    public void Dispose()
+    {
+        _objectReference?.Dispose();
+    }
+
+    [JSInvokable]
+    public async Task ToggleValidation(bool isValid)
+    {
+        isCodeValid = isValid;
+        await OnValidation.InvokeAsync(isCodeValid);
+    }
+
+    // JSInvokable method to receive code changes from JS
+    [JSInvokable]
+    public async Task CodeChanged(string updatedCode)
+    {
+        Code = updatedCode;
+        await OnCodeChanged.InvokeAsync(updatedCode);
+    }
+
+    public async Task<string> GetCodeAsync()
+    {
+        return await JS.InvokeAsync<string>("getMonacoCode", EditorId);
+    }
+
+    /// <summary>
+    /// Sets the value of the Monaco editor.
+    /// </summary>
+    /// <param name="newCode">The new code to set in the editor.</param>
+    public async Task SetCodeAsync(string newCode)
+    {
+        Code = newCode;
+        await JS.InvokeVoidAsync("setMonacoCode", EditorId, newCode);
+    }
+}

@@ -1,0 +1,8 @@
+
+.monaco-editor-container {
+    flex: 0 0 100%; /* Do not grow or shrink, take 80% width */
+    width: 100%; /* Fallback for browsers that do not support flex-basis */
+    padding: 0.5rem;
+    height: 100vh;
+    overflow: hidden; /* Ensure editor fits within container */
+}
