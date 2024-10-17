@@ -6,4 +6,12 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 @using RmlEditor
+@using MudBlazor
 @using RmlEditor.Components
+@using RmlEditor.Components.Custom
+@using RmlEditor.Components.Dialogs
+@using RmlEditor.ViewModel
+@inject IReceiptViewModel ReceiptViewModel
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
