@@ -14,7 +14,12 @@
 
 <div class="main-container">
     
-    <EditorTopBar></EditorTopBar>
+    @if (NavigationManager.Uri.Contains("editor"))
+    {
+        <EditorTopBar></EditorTopBar>
+    }
+
+
 
     <div class="content">
         @Body
