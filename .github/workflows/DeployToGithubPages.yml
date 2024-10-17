@@ -28,8 +28,8 @@ jobs:
       
       - name: Restore dependencies and build
         run: |
-          dotnet restore ./ReceiptMarkupLanguage/RmlEditorWeb/RmlEditorWeb.csproj
-          dotnet publish ./ReceiptMarkupLanguage/RmlEditorWeb/RmlEditorWeb.csproj --configuration Release --output ./build_output
+          dotnet restore ./RmlEditorWeb/RmlEditorWeb.csproj
+          dotnet publish ./RmlEditorWeb/RmlEditorWeb.csproj --configuration Release --output ./build_output
       
       - name: Update base href
         run: sed -i 's|<base href="/" />|<base href="/ReceiptMarkupLanguage/" />|' ./build_output/wwwroot/index.html 
