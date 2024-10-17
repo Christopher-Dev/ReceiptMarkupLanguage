@@ -162,7 +162,7 @@ window.initializeMonaco = (editorId, initialCode, dotNetHelper) => {
                                     suggestions.push({
                                         label: `${tag} (self-closing)`,
                                         kind: monaco.languages.CompletionItemKind.Snippet,
-                                        insertText: `<${tag} />$0`,
+                                        insertText: `${tag} />$0`,
                                         insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                                         detail: `Insert self-closing <${tag} /> tag`
                                     });
