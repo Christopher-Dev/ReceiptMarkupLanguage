@@ -1,0 +1,47 @@
+name: Deploy RmlEditorWebsite to GitHub Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Restore dependencies and build
+        run: |
+          dotnet restore
+          dotnet publish --configuration Release --output ./build_output
+      
+      - name: Update base href
+        run: sed -i 's|<base href="/" />|<base href="/ReceiptmarkupLanguage/" />|' ./build_output/wwwroot/index.html
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './build_output/wwwroot'  # Specify the path to your Blazor app's static files
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
