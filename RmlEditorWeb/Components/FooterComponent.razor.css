@@ -1,0 +1,32 @@
+﻿.footer-container {
+    background-color: transparent; /* Transparent background */
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 40px;
+}
+
+.footer-content {
+    max-width: 700px;
+    margin: 0 auto;
+    color: #b0b3b8; /* Light gray text to contrast against dark background */
+}
+
+    .footer-content a {
+        color: #ffffff; /* White color for the links */
+        text-decoration: none;
+        margin: 0 5px;
+    }
+
+        .footer-content a:hover {
+            color: #007bff; /* Blue highlight on hover for visibility */
+            text-decoration: underline;
+        }
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-content p {
+    margin: 0;
+}

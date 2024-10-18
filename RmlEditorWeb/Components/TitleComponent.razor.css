@@ -1,0 +1,20 @@
+﻿.rml-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px; /* Optional: To ensure there's some vertical space */
+    padding: 20px; /* Optional: Adds space around the content */
+    text-align: center;
+}
+
+.rml-content {
+    max-width: 600px;
+    text-align: justify;
+    font-family: Arial, sans-serif;
+}
+
+.rml-title {
+    text-align: center; /* Centers the title */
+    font-size: 3em; /* Optional: Larger font size for better emphasis */
+    margin-bottom: 20px; /* Adds space below the title */
+}

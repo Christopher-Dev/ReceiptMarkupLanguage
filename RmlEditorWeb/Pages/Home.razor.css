@@ -1,36 +1,56 @@
 ﻿.rml-features-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+    padding: 2rem;
 }
 
 .rml-feature {
-    width: 20%;
-    min-height: 240px;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #1E2A33; /* Slightly lighter than the main background */
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: #FFF;
 }
 
     .rml-feature i {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-        color: #333;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #4CAF50; /* Accent color for icons */
     }
 
     .rml-feature h3 {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+        color: #E0E0E0; /* Light color for headings */
     }
 
     .rml-feature p {
         font-size: 1rem;
+        color: #B0B0B0; /* Light gray for text */
     }
 
     .rml-feature:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+        background-color: #25333C; /* Slight darkening on hover */
     }
+
+/* Hide <p> tags on smaller screens */
+@media (max-width: 768px) {
+    .rml-feature p {
+        display: none;
+    }
+}
+
+@media (max-width: 1200px) {
+    .rml-features-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .rml-feature {
+        padding: 1rem;
+    }
+}

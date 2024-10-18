@@ -1,0 +1,41 @@
+﻿.rml-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.rml-content {
+    max-width: 600px;
+    text-align: justify;
+    font-family: Arial, sans-serif;
+}
+
+.rml-title {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.rml-button-container {
+    display: flex;
+    justify-content: center; /* Centers the button horizontally */
+    margin-top: 20px;
+}
+
+.rml-wiki-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+    .rml-wiki-button:hover {
+        background-color: #0056b3;
+    }

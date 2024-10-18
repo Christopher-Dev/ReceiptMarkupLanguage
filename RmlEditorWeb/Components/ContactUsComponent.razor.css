@@ -1,0 +1,54 @@
+﻿.rml-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+.rml-content {
+    max-width: 700px;
+    text-align: left;
+    font-family: Arial, sans-serif;
+}
+
+.rml-title {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.rml-feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+    .rml-feature-list li {
+        display: flex;
+        align-items: flex-start;
+        margin: 15px 0;
+        font-size: 1.1em;
+        line-height: 1.6;
+    }
+
+    .rml-feature-list i {
+        margin-right: 15px;
+        color: #4CAF50;
+        font-size: 1.8em;
+        width: 40px; /* Set a fixed width for consistency */
+        text-align: center;
+    }
+
+    .rml-feature-list div {
+        flex: 1;
+        display: inline-block;
+    }
+
+    .rml-feature-list a {
+        color: #007bff; /* Email link styling */
+        text-decoration: none;
+    }
+
+        .rml-feature-list a:hover {
+            text-decoration: underline; /* Email link hover effect */
+        }
