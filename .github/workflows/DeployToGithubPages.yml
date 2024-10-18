@@ -32,7 +32,6 @@ jobs:
       - name: Install .NET Workloads
         run: |
           dotnet workload install wasm-tools  # Explicitly install wasm-tools
-          dotnet workload install microsoft-net-sdk-blazorwebassembly  # Optional: Install Blazor WASM SDK if not already included
       
       # 4. Restore Dependencies and Build the Project
       - name: Restore dependencies and build
