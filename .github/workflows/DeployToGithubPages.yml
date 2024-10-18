@@ -18,27 +18,38 @@ jobs:
       name: github-pages
     runs-on: ubuntu-latest
     steps:
+      # 1. Checkout the Repository
       - name: Checkout
         uses: actions/checkout@v4
       
+      # 2. Setup .NET Core SDK
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3  # Updated to v3 for the latest features
         with:
           dotnet-version: '8.0.x'
       
+      # 3. Install Required .NET Workloads
+      - name: Install .NET Workloads
+        run: |
+          dotnet workload install wasm-tools  # Explicitly install wasm-tools
+      
+      # 4. Restore Dependencies and Build the Project
       - name: Restore dependencies and build
         run: |
           dotnet restore ./RmlEditorWeb/RmlEditorWeb.csproj
           dotnet publish ./RmlEditorWeb/RmlEditorWeb.csproj --configuration Release --output ./build_output
-            
+                
+      # 5. Setup GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
       
+      # 6. Upload Build Artifacts
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './build_output/wwwroot'  # Specify the path to your Blazor app's static files
+          path: './build_output/wwwroot'  # Path to Blazor app's static files
       
+      # 7. Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
