@@ -25,7 +25,7 @@
 
     .rml-feature-list li {
         display: flex;
-        align-items: flex-start;
+        align-items: center; /* Change this to center vertically */
         margin: 15px 0;
         font-size: 1.1em;
         line-height: 1.6;
