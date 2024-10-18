@@ -9,8 +9,18 @@
                 Start here to unlock the full potential of RML and enhance your receipt-building experience!
             </p>
             <div class="rml-button-container">
-                <a href="/wiki" class="rml-wiki-button">Explore the Wiki</a>
+                <a @onclick="@(() => NavToNewWindow("https://github.com/Christopher-Dev/ReceiptMarkupLanguage/wiki"))" class="rml-wiki-button">Explore the Wiki</a>
             </div>
         </div>
     </div>
 </section>
+
+@code{
+
+    public async Task NavToNewWindow(string url)
+    {
+        await HelperMethods.OpenInNewTab(url);
+    }
+
+
+}

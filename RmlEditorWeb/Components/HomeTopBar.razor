@@ -1,6 +1,35 @@
 ﻿<div class="top-bar">
-    <MudButton StartIcon="fas fa-book" Size="Size.Small">Documentation</MudButton>
-    <MudButton StartIcon="fas fa-pencil-alt" Size="Size.Small">Editor</MudButton>
-    <MudButton StartIcon="@Icons.Custom.Brands.GitHub" Size="Size.Small">Project GitHub</MudButton>
-    <MudButton StartIcon="fas fa-envelope" Size="Size.Small">Contact</MudButton>
+
+    <MudText>Version: @AppSettings.PreloadedValues.BuildVersion</MudText>
+
+
+    <MudIconButton Href="/downloads" Icon="fas fa-download" Size="Size.Small" Class="hover-blue"></MudIconButton>
+    <MudIconButton OnClick="@(() => NavToNewWindow("https://github.com/Christopher-Dev/ReceiptMarkupLanguage/wiki"))" Icon="fas fa-book" Size="Size.Small" Class="hover-blue"></MudIconButton>
+    <MudIconButton Href="/editor" Icon="fas fa-pencil-alt" Size="Size.Small" Class="hover-blue"></MudIconButton>
+    <MudIconButton Class="button-accent-color hover-blue" OnClick="@(() => NavToNewWindow("https://github.com/Christopher-Dev/ReceiptMarkupLanguage"))" Icon="@Icons.Custom.Brands.GitHub" Size="Size.Small"></MudIconButton>
+    <MudIconButton Icon="fas fa-message" Size="Size.Small" Class="hover-blue"></MudIconButton>
+
+    <MudIconButton OnClick="@(() => NavToNewWindow("https://github.com/Christopher-Dev/ReceiptMarkupLanguage/issues"))" Icon="fas fa-bug" Size="Size.Small" Class="hover-blue"></MudIconButton>
+    
+    <MudIconButton Icon="fas fa-gear" Size="Size.Small" Class="hover-blue"></MudIconButton>
 </div>
+
+
+
+@code{
+
+
+    public async Task FuckYou()
+    {
+        Snackbar.Add("No Light mode. You're wrong!", Severity.Error);
+    }
+
+
+    public async Task NavToNewWindow(string url)
+    {
+        await HelperMethods.OpenInNewTab(url);
+    }
+
+
+
+}
