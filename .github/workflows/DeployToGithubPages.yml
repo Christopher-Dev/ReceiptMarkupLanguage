@@ -26,11 +26,14 @@ jobs:
         with:
           dotnet-version: '8.0.x'
       
+      - name: Install .NET Workloads
+        run: dotnet workload restore
+      
       - name: Restore dependencies and build
         run: |
           dotnet restore ./RmlEditorWeb/RmlEditorWeb.csproj
           dotnet publish ./RmlEditorWeb/RmlEditorWeb.csproj --configuration Release --output ./build_output
-            
+                
       - name: Setup Pages
         uses: actions/configure-pages@v5
       
