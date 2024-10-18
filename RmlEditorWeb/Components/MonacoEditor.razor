@@ -19,14 +19,12 @@
     private string EditorId = $"editor_{Guid.NewGuid()}";
     private DotNetObjectReference<MonacoEditor> _objectReference;
 
-    private bool _isInitialized;
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && _isInitialized)
+        if (firstRender)
         {
-            _isInitialized = true;
             _objectReference = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("initializeMonaco", EditorId, Code, _objectReference);
         }
