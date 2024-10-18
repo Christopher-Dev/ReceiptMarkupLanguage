@@ -35,6 +35,7 @@
 .image-container {
     flex: 0 0 20%; /* Fixed 20% width */
     display: flex;
+    width: 500px;
     flex-direction: column;
     align-items: center;
     justify-content: center;

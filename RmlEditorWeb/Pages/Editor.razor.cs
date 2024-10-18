@@ -9,6 +9,7 @@ using ReceiptBuilder.Web.Models;
 using Constants = RmlEditorWeb.Models.Constants;
 using System.ComponentModel.DataAnnotations;
 using RmlEditorWeb.Components;
+using ThreeTwoSix.ReceiptRenderer;
 
 
 namespace RmlEditorWeb.Pages
@@ -21,17 +22,17 @@ namespace RmlEditorWeb.Pages
         private bool isValid = true;
         private string codeContent = string.Empty;
 
-        public async Task RenderImageAsync(string UpdatedCode)
-        {
+        //public async Task RenderImageAsync(string UpdatedCode)
+        //{
 
-            try
-            {
+        //    try
+        //    {
                 
-            }
-            catch (Exception ex)
-            {
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+        //}
 
 
         public async Task Validation()
@@ -43,7 +44,7 @@ namespace RmlEditorWeb.Pages
 
 
 
-        //public ReceiptRenderingService ReceiptRenderingService;
+        public ReceiptRenderingService ReceiptRenderingService;
 
         //private bool Validated = false;
 
@@ -51,22 +52,22 @@ namespace RmlEditorWeb.Pages
 
         //private string initialCode = Constants.Template;
 
-        //public string CurrentCode { get; set; } = string.Empty;
+        public string CurrentCode { get; set; } = string.Empty;
 
-        //private bool OneBitImage = true;
+        private bool OneBitImage = true;
 
-        //private bool isValidToRender = false;
+        private bool isValidToRender = false;
 
-        //public bool isCodeValid;
+        public bool isCodeValid;
 
 
 
-        //protected override async Task OnInitializedAsync()
-        //{
-        //    ReceiptRenderingService = new ReceiptRenderingService();
+        protected override async Task OnInitializedAsync()
+        {
+            ReceiptRenderingService = new ReceiptRenderingService();
 
-        //    await base.OnInitializedAsync();
-        //}
+            await base.OnInitializedAsync();
+        }
 
 
         //public async Task Validation()
@@ -94,38 +95,37 @@ namespace RmlEditorWeb.Pages
         //}
 
 
-        //public async Task RenderImageAsync(string UpdatedCode)
-        //{
+        public async Task RenderImageAsync()
+        {
 
-        //    try
-        //    {
-        //        if (true)
-        //        {
-        //            Console.WriteLine(CurrentCode);
+            try
+            {
+                if (true)
+                {
+                    Console.WriteLine(CurrentCode);
 
-        //            CurrentCode = await monacoEditor.GetCodeAsync();
+                    CurrentCode = await monacoEditor.GetCodeAsync();
 
-        //            if (OneBitImage)
-        //            {
+                    if (OneBitImage)
+                    {
 
-        //                var buffer = ReceiptRenderingService.RenderOneBitPng(CurrentCode);
+                        var buffer = ReceiptRenderingService.RenderOneBitPng(CurrentCode);
 
-        //                RenderedImageData = Convert.ToBase64String(buffer);
-        //            }
-        //            else
-        //            {
-        //                var buffer = ReceiptRenderingService.Render(CurrentCode, Constants.PNG);
+                        RenderedImageData = Convert.ToBase64String(buffer);
+                    }
+                    else
+                    {
+                        var buffer = ReceiptRenderingService.Render(CurrentCode, Constants.PNG);
 
-        //                RenderedImageData = Convert.ToBase64String(buffer);
-        //            }
-        //        }
-        //        Validated = false;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Snackbar.Add($"{ex.Message}", Severity.Error);
-        //    }
-        //}
+                        RenderedImageData = Convert.ToBase64String(buffer);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"{ex.Message}", Severity.Error);
+            }
+        }
 
     }
 

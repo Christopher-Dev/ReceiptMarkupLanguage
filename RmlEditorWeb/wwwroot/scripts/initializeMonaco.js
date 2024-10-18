@@ -204,19 +204,19 @@ window.initializeMonaco = (editorId, initialCode, dotNetHelper) => {
         window.monacoEditors[editorId] = editor;
 
         // Optionally, notify .NET about the initial code load
-        if (dotNetHelper) {
-            dotNetHelper.invokeMethodAsync('CodeChanged', initialCode)
-                .catch(err => console.error("Error invoking CodeChanged:", err));
-        }
+        //if (dotNetHelper) {
+        //    dotNetHelper.invokeMethodAsync('CodeChanged', initialCode)
+        //        .catch(err => console.error("Error invoking CodeChanged:", err));
+        //}
 
-        // Attach an event listener to handle content changes
-        editor.onDidChangeModelContent(() => {
-            const currentCode = editor.getValue();
-            if (dotNetHelper) {
-                dotNetHelper.invokeMethodAsync('CodeChanged', currentCode)
-                    .catch(err => console.error("Error invoking CodeChanged:", err));
-            }
-        });
+        //// Attach an event listener to handle content changes
+        //editor.onDidChangeModelContent(() => {
+        //    const currentCode = editor.getValue();
+        //    if (dotNetHelper) {
+        //        dotNetHelper.invokeMethodAsync('CodeChanged', currentCode)
+        //            .catch(err => console.error("Error invoking CodeChanged:", err));
+        //    }
+        //});
     })
 }; // Correctly closing initializeMonaco function
 
