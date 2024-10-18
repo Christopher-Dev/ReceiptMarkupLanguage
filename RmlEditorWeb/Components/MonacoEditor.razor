@@ -26,7 +26,7 @@
         if (firstRender)
         {
             _objectReference = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("initializeMonaco", EditorId, Code, _objectReference);
+            await JS.InvokeVoidAsync("initializeMonaco", EditorId, Code, _objectReference, false);
         }
     }
 

@@ -10,6 +10,7 @@ using Constants = RmlEditorWeb.Models.Constants;
 using System.ComponentModel.DataAnnotations;
 using RmlEditorWeb.Components;
 using ThreeTwoSix.ReceiptRenderer;
+using System.Diagnostics;
 
 
 namespace RmlEditorWeb.Pages
@@ -60,7 +61,7 @@ namespace RmlEditorWeb.Pages
 
         public bool isCodeValid;
 
-
+        public string RenderTime { get; set; } = "UnRendered";
 
         protected override async Task OnInitializedAsync()
         {
@@ -100,6 +101,8 @@ namespace RmlEditorWeb.Pages
 
             try
             {
+                Stopwatch sw = Stopwatch.StartNew();
+
                 if (true)
                 {
                     Console.WriteLine(CurrentCode);
@@ -119,6 +122,8 @@ namespace RmlEditorWeb.Pages
 
                         RenderedImageData = Convert.ToBase64String(buffer);
                     }
+
+                    RenderTime = sw.ElapsedMilliseconds.ToString() + "ms";
                 }
             }
             catch (Exception ex)

@@ -17,6 +17,9 @@
 
         <!-- Image Container -->
         <div class="image-container">
+
+            <MudButton OnClick="RenderImageAsync">Total Time to Render: @RenderTime</MudButton>
+
             @if (!string.IsNullOrEmpty(RenderedImageData))
             {
                 <img src="@($"data:image/png;base64,{RenderedImageData}")" alt="Rendered Image" class="shadowed-image" />
@@ -24,9 +27,9 @@
             else
             {
                 <div class="no-image-container">
-                    <MudButton OnClick="RenderImageAsync">
+                    <MudText>
                         Real Time Rendering in the Browser Coming Soon
-                    </MudButton>
+                    </MudText>
                 </div>
             }
         </div>
