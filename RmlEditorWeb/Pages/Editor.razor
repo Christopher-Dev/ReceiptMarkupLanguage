@@ -18,6 +18,8 @@
         <!-- Image Container -->
         <div class="image-container">
 
+            <MudButton OnClick="RenderImageAsync">Time to Get Code: @GetCodeTime</MudButton>
+
             <MudButton OnClick="RenderImageAsync">Total Time to Render: @RenderTime</MudButton>
 
             @if (!string.IsNullOrEmpty(RenderedImageData))

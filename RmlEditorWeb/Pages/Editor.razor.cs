@@ -63,6 +63,8 @@ namespace RmlEditorWeb.Pages
 
         public string RenderTime { get; set; } = "UnRendered";
 
+        public string GetCodeTime { get; set; } = "UnRendered";
+
         protected override async Task OnInitializedAsync()
         {
             ReceiptRenderingService = new ReceiptRenderingService();
@@ -108,7 +110,7 @@ namespace RmlEditorWeb.Pages
                     Console.WriteLine(CurrentCode);
 
                     CurrentCode = await monacoEditor.GetCodeAsync();
-
+                    GetCodeTime = sw.ElapsedMilliseconds.ToString() + "ms";
                     if (OneBitImage)
                     {
 
