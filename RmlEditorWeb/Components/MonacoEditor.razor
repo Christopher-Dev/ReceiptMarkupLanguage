@@ -17,6 +17,7 @@
     public bool isCodeValid;
 
     private string EditorId = $"editor_{Guid.NewGuid()}";
+
     private DotNetObjectReference<MonacoEditor> _objectReference;
 
 
@@ -27,9 +28,8 @@
         {
             _objectReference = DotNetObjectReference.Create(this);
 
-            // await JS.InvokeVoidAsync("registerRmlLanguage", false);
 
-            await JS.InvokeVoidAsync("initializeMonaco", EditorId, Code, _objectReference, false);
+            await JS.InvokeVoidAsync("initializeMonaco", EditorId, Code, _objectReference);
         }
     }
 
