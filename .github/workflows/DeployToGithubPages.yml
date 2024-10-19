@@ -21,6 +21,8 @@ jobs:
       # 1. Checkout the Repository
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: production  # Checkout the production branch
       
       # 2. Setup .NET Core SDK
       - name: Setup .NET Core
@@ -53,3 +55,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          branch: production  # Deploy to the production branch
