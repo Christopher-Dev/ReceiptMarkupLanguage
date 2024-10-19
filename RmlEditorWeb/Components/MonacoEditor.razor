@@ -26,6 +26,9 @@
         if (firstRender)
         {
             _objectReference = DotNetObjectReference.Create(this);
+
+            // await JS.InvokeVoidAsync("registerRmlLanguage", false);
+
             await JS.InvokeVoidAsync("initializeMonaco", EditorId, Code, _objectReference, false);
         }
     }

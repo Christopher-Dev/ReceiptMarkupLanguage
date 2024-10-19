@@ -1,5 +1,6 @@
 // Ensure the Monaco editors object is initialized
 window.monacoEditors = window.monacoEditors || {};
+window.monacoCompletionProviderRegistered = window.monacoCompletionProviderRegistered || false;
 
 /**
  * Initializes the Monaco editor with RML support.
@@ -27,52 +28,8 @@ window.initializeMonaco = (editorId, initialCode, dotNetHelper, debug = false) =
             return;
         }
 
-        // Register the custom 'rml' language only once
-        if (!window.monacoLanguageRegistered) {
-            log("Registering 'rml' language.");
-            monaco.languages.register({ id: 'rml' });
-
-            // Define the Monarch tokenizer for RML
-            monaco.languages.setMonarchTokensProvider('rml', {
-                tokenizer: {
-                    root: [
-                        [/(<\/?)([a-zA-Z][\w]*)(\s|>)/, ['delimiter', 'tag', 'delimiter']],
-                        [/([a-zA-Z][\w]*)\s*=/, 'attribute.name'],
-                        [/"/, 'attribute.value', '@attributeValue'],
-                        [/<\/?/, 'delimiter'],
-                        [/\/?>/, 'delimiter'],
-                    ],
-                    attributeValue: [
-                        [/[^"]+/, 'attribute.value'],
-                        [/"/, 'attribute.value', '@pop'],
-                    ]
-                },
-            });
-            window.monacoLanguageRegistered = true;
-        } else {
-            log("'rml' language already registered.");
-        }
-
-        // Define a custom theme only once
-        if (!window.monacoThemeRegistered) {
-            log("Defining 'customTheme'.");
-            monaco.editor.defineTheme('customTheme', {
-                base: 'vs-dark',
-                inherit: true,
-                rules: [
-                    { token: 'tag', foreground: '#1263e6' },
-                    { token: 'attribute.name', foreground: '#1263e6' },
-                    { token: 'attribute.value', foreground: '#C0C0C0' },
-                    { token: 'delimiter', foreground: '#808080' },
-                ],
-                colors: {
-                    'editor.background': '#1E1E1E',
-                },
-            });
-            window.monacoThemeRegistered = true;
-        } else {
-            log("'customTheme' already defined.");
-        }
+        // Ensure the custom 'rml' language and theme are registered
+        window.registerRmlLanguage(debug);
 
         // Create the Monaco editor instance
         const editor = monaco.editor.create(document.getElementById(editorId), {
@@ -89,6 +46,7 @@ window.initializeMonaco = (editorId, initialCode, dotNetHelper, debug = false) =
         // Register a completion item provider only once
         if (!window.monacoCompletionProviderRegistered) {
             log("Registering completion item provider for 'rml'.");
+
             const completionProvider = monaco.languages.registerCompletionItemProvider('rml', {
                 triggerCharacters: ['<', ' '],
                 provideCompletionItems: (model, position) => {
@@ -191,7 +149,6 @@ window.initializeMonaco = (editorId, initialCode, dotNetHelper, debug = false) =
         //            .catch(err => console.error("Error invoking CodeChanged:", err));
         //    }
         //});
-
 
     });
 };
