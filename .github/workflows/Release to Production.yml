@@ -34,23 +34,17 @@ jobs:
           dotnet restore ./RmlEditorWeb/RmlEditorWeb.csproj
           dotnet build ./RmlEditorWeb/RmlEditorWeb.csproj --configuration Release
 
-      # 5. If the build succeeds, merge master into production
+      # 5. Checkout the production branch
+      - name: Checkout production branch
+        run: |
+          git fetch origin
+          git checkout production
+      
+      # 6. If the build succeeds, merge master into production
       - name: Merge master into production
         if: success()  # This step runs only if the build is successful
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git checkout production
           git merge master --no-ff --commit -m "Merging master into production [skip ci]"
           git push origin production
-
-      # 6. Create Pull Request (optional, commented out for now)
-      # - name: Create pull request to production (optional)
-      #   if: success()
-      #   uses: peter-evans/create-pull-request@v5
-      #   with:
-      #     commit-message: "Build success: Merging master into production"
-      #     branch: production
-      #     base: production
-      #     title: "Auto PR: Merge master into production"
-      #     body: "Automated merge of master branch after successful build."
