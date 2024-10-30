@@ -9,8 +9,9 @@ using ReceiptBuilder.Web.Models;
 using Constants = RmlEditorWeb.Models.Constants;
 using System.ComponentModel.DataAnnotations;
 using RmlEditorWeb.Components;
-using ThreeTwoSix.ReceiptRenderer;
 using System.Diagnostics;
+using System.Text;
+using System.Net.Http.Json;
 
 
 namespace RmlEditorWeb.Pages
@@ -45,7 +46,6 @@ namespace RmlEditorWeb.Pages
 
 
 
-        public ReceiptRenderingService ReceiptRenderingService;
 
         //private bool Validated = false;
 
@@ -67,7 +67,6 @@ namespace RmlEditorWeb.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            ReceiptRenderingService = new ReceiptRenderingService();
 
             await base.OnInitializedAsync();
         }
@@ -98,34 +97,40 @@ namespace RmlEditorWeb.Pages
         //}
 
 
+
         public async Task RenderImageAsync()
         {
-
             try
             {
                 Stopwatch sw = Stopwatch.StartNew();
 
-                if (true)
+                // Retrieve code from the editor
+                CurrentCode = await monacoEditor.GetCodeAsync();
+                GetCodeTime = sw.ElapsedMilliseconds.ToString() + "ms";
+
+                // Get the base URI from NavigationManager
+                var baseAddress = NavigationManager.BaseUri;
+
+                // Create an instance of HttpClient
+                using HttpClient client = new HttpClient { BaseAddress = new Uri(baseAddress) };
+
+                // Wrap the XML markup in a JSON object
+                var jsonObject = new { markup = CurrentCode };
+
+                // Serialize the JSON object
+                var content = JsonContent.Create(jsonObject);
+
+                // Make the POST request
+                HttpResponseMessage response = await client.PostAsync("/api/Renderer", content);
+
+                // Read and store the response string
+                if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine(CurrentCode);
-
-                    CurrentCode = await monacoEditor.GetCodeAsync();
-                    GetCodeTime = sw.ElapsedMilliseconds.ToString() + "ms";
-                    if (OneBitImage)
-                    {
-
-                        var buffer = ReceiptRenderingService.RenderOneBitPng(CurrentCode);
-
-                        RenderedImageData = Convert.ToBase64String(buffer);
-                    }
-                    else
-                    {
-                        var buffer = ReceiptRenderingService.Render(CurrentCode, Constants.PNG);
-
-                        RenderedImageData = Convert.ToBase64String(buffer);
-                    }
-
-                    RenderTime = sw.ElapsedMilliseconds.ToString() + "ms";
+                    RenderedImageData = await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    Snackbar.Add($"Error: {response.ReasonPhrase}", Severity.Error);
                 }
             }
             catch (Exception ex)
@@ -133,6 +138,9 @@ namespace RmlEditorWeb.Pages
                 Snackbar.Add($"{ex.Message}", Severity.Error);
             }
         }
+
+
+
 
     }
 
