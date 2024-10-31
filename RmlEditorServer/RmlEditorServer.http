@@ -1,4 +1,4 @@
-@RmlEditorServer_HostAddress = http://localhost:5085
+@RmlEditorServer_HostAddress = http://localhost:5237
 
 GET {{RmlEditorServer_HostAddress}}/weatherforecast/
 Accept: application/json

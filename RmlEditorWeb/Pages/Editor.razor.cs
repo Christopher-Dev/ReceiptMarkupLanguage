@@ -1,16 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.JSInterop;
-using Microsoft.VisualBasic;
 using MudBlazor;
-using System;
-using ReceiptBuilder.Web.Models;
 using Constants = RmlEditorWeb.Models.Constants;
-using System.ComponentModel.DataAnnotations;
 using RmlEditorWeb.Components;
 using System.Diagnostics;
-using System.Text;
 using System.Net.Http.Json;
 
 
@@ -23,18 +15,6 @@ namespace RmlEditorWeb.Pages
         private string editorOutput = string.Empty;
         private bool isValid = true;
         private string codeContent = string.Empty;
-
-        //public async Task RenderImageAsync(string UpdatedCode)
-        //{
-
-        //    try
-        //    {
-                
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //    }
-        //}
 
 
         public async Task Validation()
@@ -108,25 +88,41 @@ namespace RmlEditorWeb.Pages
                 CurrentCode = await monacoEditor.GetCodeAsync();
                 GetCodeTime = sw.ElapsedMilliseconds.ToString() + "ms";
 
-                // Get the base URI from NavigationManager
-                var baseAddress = NavigationManager.BaseUri;
+                // Set the base URI to the specified address
+                var baseAddress = "https://localhost:7213";
 
-                // Create an instance of HttpClient
+                // Create an instance of HttpClient with the specified base address
                 using HttpClient client = new HttpClient { BaseAddress = new Uri(baseAddress) };
 
-                // Wrap the XML markup in a JSON object
-                var jsonObject = new { markup = CurrentCode };
+                // Create the RenderRequest object
+                var renderRequest = new RenderRequest
+                {
+                    Id = Guid.NewGuid(),         // Generate a unique ID or use a specific ID if needed
+                    RawContents = CurrentCode    // Assuming CurrentCode holds the data for "RawContents"
+                };
 
-                // Serialize the JSON object
-                var content = JsonContent.Create(jsonObject);
+                // Serialize the RenderRequest object
+                var content = JsonContent.Create(renderRequest);
 
-                // Make the POST request
-                HttpResponseMessage response = await client.PostAsync("/api/Renderer", content);
+                // Make the POST request to the new endpoint
+                HttpResponseMessage response = await client.PostAsync("/api/WeatherForecast/RenderImage", content);
 
-                // Read and store the response string
+                // Handle the response
                 if (response.IsSuccessStatusCode)
                 {
-                    RenderedImageData = await response.Content.ReadAsStringAsync();
+                    // Deserialize the response as RenderResponse
+                    var renderResponse = await response.Content.ReadFromJsonAsync<RenderResponse>();
+
+                    if (renderResponse != null)
+                    {
+                        var stringResult = Convert.ToBase64String(renderResponse.Renderedbase64);
+
+                        RenderedImageData = stringResult;
+                    }
+                    else
+                    {
+                        Snackbar.Add("Error: Unable to parse the response.", Severity.Error);
+                    }
                 }
                 else
                 {
@@ -139,6 +135,18 @@ namespace RmlEditorWeb.Pages
             }
         }
 
+
+        public class RenderRequest
+        {
+            public Guid Id { get; set; }
+            public string RawContents { get; set; }
+        }
+
+        public class RenderResponse
+        {
+            public Guid Id { get; set; }
+            public byte[] Renderedbase64 { get; set; }
+        }
 
 
 

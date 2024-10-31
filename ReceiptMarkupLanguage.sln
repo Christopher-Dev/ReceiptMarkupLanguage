@@ -3,13 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmlEditor", "RmlEditor\RmlEditor.csproj", "{A25470FA-5693-4B03-B30D-37BDE2958239}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmlEditorWeb", "RmlEditorWeb\RmlEditorWeb.csproj", "{AD0E3DD0-F52B-46E2-93CF-42E547EC315F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReceiptMarkupLanguage.Classes", "ReceiptMarkupLanguage.Classes\ReceiptMarkupLanguage.Classes.csproj", "{9E2A79B2-F523-4B2C-8854-05B706B70271}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmlEditorServer", "RmlEditorServer\RmlEditorServer.csproj", "{18F455FF-3971-4480-9CB8-438824CFB550}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmlEditorServer", "RmlEditorServer\RmlEditorServer.csproj", "{F4457155-5446-428C-8F38-256226F865F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,24 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A25470FA-5693-4B03-B30D-37BDE2958239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A25470FA-5693-4B03-B30D-37BDE2958239}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A25470FA-5693-4B03-B30D-37BDE2958239}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{A25470FA-5693-4B03-B30D-37BDE2958239}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A25470FA-5693-4B03-B30D-37BDE2958239}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A25470FA-5693-4B03-B30D-37BDE2958239}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{AD0E3DD0-F52B-46E2-93CF-42E547EC315F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD0E3DD0-F52B-46E2-93CF-42E547EC315F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD0E3DD0-F52B-46E2-93CF-42E547EC315F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD0E3DD0-F52B-46E2-93CF-42E547EC315F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9E2A79B2-F523-4B2C-8854-05B706B70271}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E2A79B2-F523-4B2C-8854-05B706B70271}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E2A79B2-F523-4B2C-8854-05B706B70271}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E2A79B2-F523-4B2C-8854-05B706B70271}.Release|Any CPU.Build.0 = Release|Any CPU
-		{18F455FF-3971-4480-9CB8-438824CFB550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18F455FF-3971-4480-9CB8-438824CFB550}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18F455FF-3971-4480-9CB8-438824CFB550}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18F455FF-3971-4480-9CB8-438824CFB550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4457155-5446-428C-8F38-256226F865F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4457155-5446-428C-8F38-256226F865F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4457155-5446-428C-8F38-256226F865F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4457155-5446-428C-8F38-256226F865F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
