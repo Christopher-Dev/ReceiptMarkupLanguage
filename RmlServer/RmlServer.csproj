@@ -21,4 +21,8 @@
     <PackageReference Include="ThreeTwoSix.ReceiptRenderer" Version="17.0.17-preview" />
   </ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\RmlCommon\RmlCommon.csproj" />
+	</ItemGroup>
+
 </Project>

@@ -4,6 +4,8 @@ using Constants = RmlEditorWeb.Models.Constants;
 using RmlEditorWeb.Components;
 using System.Diagnostics;
 using System.Net.Http.Json;
+using RmlCommon;
+using RmlCommon.ServerModels;
 
 
 namespace RmlEditorWeb.Pages
@@ -72,7 +74,7 @@ namespace RmlEditorWeb.Pages
                 GetCodeTime = sw.ElapsedMilliseconds.ToString() + "ms";
 
                 // Set the base URI to the specified address
-                var baseAddress = "https://localhost:32783";
+                var baseAddress = "https://localhost:32785";
 
                 // Create an instance of HttpClient with the specified base address
                 using HttpClient client = new HttpClient { BaseAddress = new Uri(baseAddress) };
@@ -81,24 +83,31 @@ namespace RmlEditorWeb.Pages
                 var renderRequest = new RenderRequest
                 {
                     Id = Guid.NewGuid(),         // Generate a unique ID or use a specific ID if needed
-                    RawContents = CurrentCode    // Assuming CurrentCode holds the data for "RawContents"
+                    BodyContents = CurrentCode,    // Assuming CurrentCode holds the data for "RawContents"
+                    MimeType = Constants.PNG,
+                    OneBitPng = true,
+                };
+
+                var request = new SmartRequest<RenderRequest>()
+                {
+                    Data = renderRequest,
                 };
 
                 // Serialize the RenderRequest object
                 var content = JsonContent.Create(renderRequest);
 
                 // Make the POST request to the new endpoint
-                HttpResponseMessage response = await client.PostAsync("/api/WeatherForecast/RenderImage", content);
+                HttpResponseMessage response = await client.PostAsync("/api/Render/RenderImage", content);
 
                 // Handle the response
                 if (response.IsSuccessStatusCode)
                 {
                     // Deserialize the response as RenderResponse
-                    var renderResponse = await response.Content.ReadFromJsonAsync<RenderResponse>();
+                    var renderResponse = await response.Content.ReadFromJsonAsync<SmartResponse<CompletedRender>>();
 
-                    if (renderResponse != null)
+                    if (renderResponse.Data != null)
                     {
-                        var stringResult = Convert.ToBase64String(renderResponse.Renderedbase64);
+                        var stringResult = Convert.ToBase64String(renderResponse.Data.Receipt);
 
                         RenderedImageData = stringResult;
                     }
@@ -117,22 +126,5 @@ namespace RmlEditorWeb.Pages
                 Snackbar.Add($"{ex.Message}", Severity.Error);
             }
         }
-
-
-        public class RenderRequest
-        {
-            public Guid Id { get; set; }
-            public string RawContents { get; set; }
-        }
-
-        public class RenderResponse
-        {
-            public Guid Id { get; set; }
-            public byte[] Renderedbase64 { get; set; }
-        }
-
-
-
     }
-
 }
