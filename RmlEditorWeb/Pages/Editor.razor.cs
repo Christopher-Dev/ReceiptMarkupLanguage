@@ -94,7 +94,7 @@ namespace RmlEditorWeb.Pages
                 };
 
                 // Serialize the RenderRequest object
-                var content = JsonContent.Create(renderRequest);
+                var content = JsonContent.Create(request);
 
                 // Make the POST request to the new endpoint
                 HttpResponseMessage response = await client.PostAsync("/api/Render/RenderImage", content);
