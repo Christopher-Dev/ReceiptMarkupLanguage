@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ThreeTwoSix.ReceiptRenderer;
 
-
-namespace RmlEditorServer.Controllers
+namespace RmlServer.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
@@ -23,17 +22,6 @@ namespace RmlEditorServer.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
 
         public class RenderRequest
         {
@@ -50,16 +38,25 @@ namespace RmlEditorServer.Controllers
         [HttpPost]
         public RenderResponse RenderImage([FromBody] RenderRequest request)
         {
-
-
-            var results = _receiptRenderingService.RenderOneBitPng(request.RawContents);
-
-
-            return new RenderResponse
+            try
             {
-                Id = request.Id,
-                Renderedbase64 = results
-            };
+
+                var results = _receiptRenderingService.RenderOneBitPng(request.RawContents);
+
+
+                return new RenderResponse
+                {
+                    Id = request.Id,
+                    Renderedbase64 = results
+                };
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+
         }
 
     }

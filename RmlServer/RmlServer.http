@@ -1,0 +1,6 @@
+@RmlServer_HostAddress = http://localhost:5056
+
+GET {{RmlServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

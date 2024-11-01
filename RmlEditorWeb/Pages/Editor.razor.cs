@@ -52,29 +52,12 @@ namespace RmlEditorWeb.Pages
         }
 
 
-        //public async Task Validation()
-        //{
-        //    string code = await monacoEditor.GetCodeAsync();
-
-        //    bool isValid = await JS.InvokeAsync<bool>(identifier: "validateCustomXML", code);
-
-        //    Validated = isValid;
-        //    StateHasChanged();
-        //}
-
-
 
 
         ////TODO Implement tha method to show and then Toggle Valid render ready with minimum template
 
         private string RenderedImageData = string.Empty;
 
-
-        //[JSInvokable]
-        //public async Task ShowError(string errorMessage)
-        //{
-        //    Snackbar.Add($"{errorMessage}", Severity.Error);
-        //}
 
 
 
@@ -89,7 +72,7 @@ namespace RmlEditorWeb.Pages
                 GetCodeTime = sw.ElapsedMilliseconds.ToString() + "ms";
 
                 // Set the base URI to the specified address
-                var baseAddress = "https://localhost:7213";
+                var baseAddress = "https://localhost:32783";
 
                 // Create an instance of HttpClient with the specified base address
                 using HttpClient client = new HttpClient { BaseAddress = new Uri(baseAddress) };

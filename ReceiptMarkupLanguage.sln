@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmlEditorWeb", "RmlEditorWe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmlEditorServer", "RmlEditorServer\RmlEditorServer.csproj", "{F4457155-5446-428C-8F38-256226F865F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmlServer", "RmlServer\RmlServer.csproj", "{BD6EF399-E0BA-431F-A35A-530284094DDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F4457155-5446-428C-8F38-256226F865F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4457155-5446-428C-8F38-256226F865F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4457155-5446-428C-8F38-256226F865F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD6EF399-E0BA-431F-A35A-530284094DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD6EF399-E0BA-431F-A35A-530284094DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD6EF399-E0BA-431F-A35A-530284094DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD6EF399-E0BA-431F-A35A-530284094DDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

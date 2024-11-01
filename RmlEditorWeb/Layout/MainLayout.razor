@@ -13,19 +13,7 @@
 
 
 <div class="main-container">
-    
-    @if (NavigationManager.Uri.Contains("editor"))
-    {
-        <EditorTopBar></EditorTopBar>
-    }
-    else
-    {
-        <HomeTopBar></HomeTopBar>
-    }
-
-    <div class="content">
-        @Body
-    </div>
+    @Body
 </div>
 
 
