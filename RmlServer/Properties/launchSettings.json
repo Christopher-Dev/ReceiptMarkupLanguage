@@ -18,7 +18,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7238;http://localhost:5056"
+      "applicationUrl": "https://localhost:32785;http://localhost:5056"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -26,18 +26,20 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "sslPort": 32785
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080"
+        "ASPNETCORE_HTTPS_PORT": "8081",
+        "ASPNETCORE_HTTP_PORT": "8080"
       },
-      "publishAllPorts": true,
-      "useSSL": true
+      "publishAllPorts": false,
+      "useSSL": true,
+      "sslPort": 32785 // Maps localhost port 32785 for SSL
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
@@ -46,7 +48,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:63151",
-      "sslPort": 44301
+      "sslPort": 32785
     }
   }
 }
