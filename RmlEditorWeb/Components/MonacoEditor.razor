@@ -7,7 +7,7 @@
     [Parameter]
     public string Code { get; set; }
 
-    // New EventCallback parameter
+    // EventCallbacks to notify parent components of changes and validation
     [Parameter]
     public EventCallback<string> OnCodeChanged { get; set; }
 
@@ -26,25 +26,23 @@
         {
             _objectReference = DotNetObjectReference.Create(this);
 
-
-            await JS.InvokeVoidAsync("initializeMonaco", EditorId, Code, _objectReference);
+            await JS.InvokeVoidAsync("initializeMonaco", EditorId, Code, _objectReference, false);
         }
     }
 
-    // Implement IDisposable to clean up the DotNetObjectReference
+    // Implement IDisposable to clean up the DotNetObjectReference and dispose the editor
     public void Dispose()
     {
+        // Dispose of the Monaco Editor instance
+        JS.InvokeVoidAsync("disposeMonaco", EditorId);
+
         _objectReference?.Dispose();
     }
 
-    [JSInvokable]
-    public async Task ToggleValidation(bool isValid)
-    {
-        isCodeValid = isValid;
-        await OnValidation.InvokeAsync(isCodeValid);
-    }
-
-    // JSInvokable method to receive code changes from JS
+    /// <summary>
+    /// Invoked from JavaScript when the editor's content changes.
+    /// </summary>
+    /// <param name="updatedCode">The updated code from the editor.</param>
     [JSInvokable]
     public async Task CodeChanged(string updatedCode)
     {
@@ -52,6 +50,21 @@
         await OnCodeChanged.InvokeAsync(updatedCode);
     }
 
+    /// <summary>
+    /// Invoked from JavaScript to toggle validation status.
+    /// </summary>
+    /// <param name="isValid">The validation status.</param>
+    [JSInvokable]
+    public async Task ToggleValidation(bool isValid)
+    {
+        isCodeValid = isValid;
+        await OnValidation.InvokeAsync(isCodeValid);
+    }
+
+    /// <summary>
+    /// Retrieves the current code from the Monaco editor.
+    /// </summary>
+    /// <returns>The current code as a string.</returns>
     public async Task<string> GetCodeAsync()
     {
         return await JS.InvokeAsync<string>("getMonacoCode", EditorId);

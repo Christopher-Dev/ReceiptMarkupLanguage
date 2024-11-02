@@ -2,44 +2,17 @@
 @using RmlEditorWeb.ViewModel
 <div class="top-bar">
 
-    <MudTooltip Text="Home">
-        <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.Home" Href="/"></MudIconButton>
-    </MudTooltip>
+    <MudButton Color="Color.Inherit" StartIcon="@Icons.Material.Filled.Home" Href="/">Home</MudButton>
     
-    <MudTooltip Text="Project Name">
-        <MudText Style="margin-left: 0.5rem;" Color="Color.Inherit">Lotto Ticket Receipt</MudText>
-    </MudTooltip>
-
     <MudSpacer></MudSpacer>
 
-    <MudTooltip Text="@validationText" Color="@validationColor" Placement="Placement.Bottom">
-        <MudIcon Icon="@validationIcon" Color="@validationColor"></MudIcon>
-    </MudTooltip>
+    <MudChip T="string" Disabled="true" Color="@validationColor">Success</MudChip>
 
+    <MudButton Style="margin-left: 0.5rem;" Color="Color.Inherit" OnClick="GlobalVariablesDialog">Global Variables</MudButton>
 
-    <MudTooltip Text="View Mock Repeater Variables">
-        <MudIconButton Style="margin-left: 0.5rem;" Color="Color.Inherit" Icon="@Icons.Material.Filled.Repeat" OnClick="DisplayRepeaterDialog"></MudIconButton>
-    </MudTooltip>
+    <MudButton Style="margin-left: 0.5rem;" Color="Color.Inherit" OnClick="RepeaterVariablesDialog">Repeater Data</MudButton>
 
-    <MudTooltip Text="View Mock Global Variables">
-        <MudIconButton Style="margin-left: 0.5rem;" Color="Color.Inherit" Icon="@Icons.Material.Filled.Key" OnClick="DisplayKeyPairDialog"></MudIconButton>
-    </MudTooltip>
-
-    <MudTooltip Text="View Full Code">
-        <MudIconButton Style="margin-left: 0.5rem;" Color="Color.Inherit" Icon="@Icons.Material.Filled.Code" OnClick="OnClearCodeButtonClicked"></MudIconButton>
-    </MudTooltip>
-    
-    <MudTooltip Text="Encode Image to Base64">
-        <MudIconButton Style="margin-left: 0.5rem;" Color="Color.Inherit" Icon="@Icons.Material.Filled.Image"></MudIconButton>
-    </MudTooltip>
-    
-    <MudTooltip Text="Settings">
-        <MudIconButton Style="margin-left: 0.5rem;" Color="Color.Inherit" Icon="@Icons.Material.Filled.Settings" OnClick="OnSettingsButtonClicked"></MudIconButton>
-    </MudTooltip>
-    
-    <MudTooltip Text="Clear Editor Content">
-        <MudIconButton Style="margin-left: 0.5rem;" Color="Color.Inherit" Icon="@Icons.Material.Filled.Clear" OnClick="OnCancelButtonClicked"></MudIconButton>
-    </MudTooltip>
+    <MudButton Style="margin-left: 0.5rem;" Color="Color.Info" Variant="Variant.Filled">Render</MudButton>
 
 </div>
 
@@ -51,7 +24,7 @@
     private string validationText = "Code is Valid";
 
 
-    private async Task DisplayRepeaterDialog()
+    private async Task RepeaterVariablesDialog()
     {
         // Define dialog parameters if needed (for passing data to the dialog)
         var parameters = new DialogParameters();
@@ -65,7 +38,7 @@
         };
 
         // Show the dialog with parameters and options
-        var dialog = DialogService.Show<RepeaterKeyPairDialog>("", parameters, options);
+        var dialog = DialogService.Show<RepeaterVariables>("", parameters, options);
 
         // Wait for the dialog result
         var result = await dialog.Result;
@@ -78,7 +51,7 @@
         }
     }
 
-    private async Task DisplayKeyPairDialog()
+    private async Task GlobalVariablesDialog()
     {
         // Define dialog parameters if needed (for passing data to the dialog)
         var parameters = new DialogParameters();
@@ -92,7 +65,7 @@
             };
 
         // Show the dialog with parameters and options
-        var dialog = DialogService.Show<KeyPairDialog>("", parameters, options);
+        var dialog = DialogService.Show<GlobalVariables>("", parameters, options);
 
         // Wait for the dialog result
         var result = await dialog.Result;

@@ -33,7 +33,7 @@ namespace RmlEditorWeb.Pages
 
         //private MonacoEditor monacoEditor;
 
-        //private string initialCode = Constants.Template;
+        private string InitialCode = Constants.Template;
 
         public string CurrentCode { get; set; } = string.Empty;
 
@@ -60,6 +60,20 @@ namespace RmlEditorWeb.Pages
 
         private string RenderedImageData = string.Empty;
 
+
+        private async Task HandleCodeChanged(string updatedCode)
+        {
+            // Handle the code change (e.g., save to database, update UI, etc.)
+            Console.WriteLine("Code updated: " + updatedCode);
+            // You can add additional logic here as needed
+        }
+
+        private async Task HandleValidation(bool isValid)
+        {
+            // Handle the validation status (e.g., display validation messages)
+            Console.WriteLine("Is code valid: " + isValid);
+            // You can add additional logic here as needed
+        }
 
 
 

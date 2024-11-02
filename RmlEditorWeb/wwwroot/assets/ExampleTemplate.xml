@@ -1,0 +1,186 @@
+﻿<Receipt>
+	<DataContext>
+		<Dictionary>
+			<Pair Key="DrawNumber" Value="4564" />
+			<Pair Key="DrawDate" Value="JAN 15, 2024" />
+			<Pair Key="TicketNumber" Value="29324 87461 66899 05686 40808 54268 49547 21327" />
+			<Pair Key="PrintDate" Value="JAN 14, 2024" />
+			<Pair Key="RetailerId" Value="retailerId" />
+			<Pair Key="ExternalDeviceId" Value="externalDeviceId" />
+			<Pair Key="Barcode" Value="29324 87461 66899 05686 40808 54268 49547 21327" />
+			<Pair Key="TicketValue" Value="$2.50" />
+			<Pair Key="VoidBlock" Value="" />
+			<Pair Key="SecondaryECN" Value="ABC:123" />
+		</Dictionary>
+	</DataContext>
+	<Resources>
+		<DataSource Name="panels">
+			<Dictionary rowIndex="A" numberOne="1" numberTwo="2" numberThree="3" numberFour="4" numberFive="5" playType="STR" playAmount="$0.50" quickPick="QP" />
+			<Dictionary rowIndex="B" numberOne="1" numberTwo="2" numberThree="3" numberFour="4" numberFive="5" playType="STR" playAmount="$0.50" quickPick="QP" />
+			<Dictionary rowIndex="c" numberOne="1" numberTwo="2" numberThree="3" numberFour="4" numberFive="5" playType="STR" playAmount="$0.50" quickPick="QP" />
+
+		</DataSource>
+	</Resources>
+	<Body Width="500px" Background="FFFFFF">
+
+		<Row Margin="5,10,5,10">
+			<TextBlock FontSize="26" Width="*" HorizontalAlignment="Center" Content="www.louisianalottery.com/pick-5" />
+		</Row>
+
+		<Row Margin="0,0,0,10">
+			<TextBlock Width="*" HorizontalAlignment="Center" FontSize="21" >
+				<Run Content="{PrintDate}" />
+			</TextBlock>
+		</Row>
+
+		<Row Margin="5,0,5,10">
+			<TextBlock FontSize="20" Width="*" HorizontalAlignment="Center" Content="{TicketNumber}" />
+		</Row>
+
+		<Row Margin="20">
+			<TextBlock FontSize="30" Width="*" HorizontalAlignment="Center" Content="_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _" />
+		</Row>
+
+		<Row>
+			<TextBlock Width="*" HorizontalAlignment="Center" FontSize="40"  >
+				<Run Content="{VoidBlock}" />
+			</TextBlock>
+		</Row>
+
+		<Repeater DataSource="panels">
+			<Row Margin="0,10,0,10">
+				<TextBlock Width="Auto" VerticalAlignment="Start" HorizontalAlignment="Center" >
+					<Run FontSize="24" Content=" " />
+					<Run FontSize="19" Content="{rowIndex}" />
+					<Run FontSize="24" Content="  " />
+				</TextBlock>
+
+				<TextBlock Width="31px" VerticalAlignment="Center" HorizontalAlignment="Center">
+					<Run FontSize="27" Content="{numberOne}" />
+				</TextBlock>
+
+				<TextBlock Width="31px" VerticalAlignment="Center" HorizontalAlignment="Center">
+					<Run FontSize="27" Content="{numberTwo}" />
+				</TextBlock>
+
+				<TextBlock Width="31px" VerticalAlignment="Center" HorizontalAlignment="Center">
+					<Run FontSize="27" Content="{numberThree}" />
+				</TextBlock>
+
+				<TextBlock Width="31px" VerticalAlignment="Center" HorizontalAlignment="Center">
+					<Run FontSize="27" Content="{numberFour}" />
+				</TextBlock>
+
+				<TextBlock Width="31px" VerticalAlignment="Center" HorizontalAlignment="Center">
+					<Run FontSize="27" Content="{numberFive}" />
+				</TextBlock>
+
+				<TextBlock FontSize="24" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Center" Content="  "></TextBlock>
+
+				<TextBlock Width="*" VerticalAlignment="Center" HorizontalAlignment="Start" >
+					<Run FontSize="23" Content="{playType}" />
+				</TextBlock>
+
+				<TextBlock Width="Auto" VerticalAlignment="Start" HorizontalAlignment="Center" >
+					<Run FontSize="24" Content="  " />
+					<Run FontSize="26" Content="{playAmount}" />
+					<Run FontSize="24" Content="  " />
+					<Run FontSize="19" Content="{quickPick}" />
+					<Run FontSize="24" Content=" " />
+				</TextBlock>
+			</Row>
+		</Repeater>
+
+		<Row>
+			<TextBlock Width="*" HorizontalAlignment="Center" FontSize="40"  >
+				<Run Content="{VoidBlock}" />
+			</TextBlock>
+		</Row>
+
+		<Row Margin="20">
+			<TextBlock FontSize="30" Width="*" HorizontalAlignment="Center" Content="_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _" />
+		</Row>
+
+		<Row Margin="0,20,0,20">
+			<TextBlock Width="*" HorizontalAlignment="Center" FontSize="20"  >
+				<Run Content="FOR 1 DRAWING (#" />
+				<Run Content="{DrawNumber}" />
+				<Run Content=") " />
+				<Run Content="{DrawDate}" />
+			</TextBlock>
+		</Row>
+
+		<Row Margin="0,0,5,20">
+			<TextBlock FontSize="32" FontWeight="Bold" Width="*" HorizontalAlignment="Center" Content="{TicketValue}" />
+		</Row>
+
+		<Row Margin="0,0,20,3">
+			<TextBlock FontSize="22" Width="*" HorizontalAlignment="Center" Content="Play Powerball, Mega Millions" />
+		</Row>
+		<Row Margin="0,0,20,3">
+			<TextBlock FontSize="22" Width="*" HorizontalAlignment="Center" Content="and All of Our Daily Pick Games," />
+		</Row>
+		<Row Margin="0,0,20,0">
+			<TextBlock FontSize="22" Width="*" HorizontalAlignment="Center" Content="Pick 3, Pick 4 and Pick 5 Today!" />
+		</Row>
+
+		<Row Margin="0,45,0,20">
+			<TextBlock FontSize="19" Width="*" HorizontalAlignment="Left" Content=" PRINTED NAME ________________________________" />
+		</Row>
+
+		<Row Margin="0,30,0,25">
+			<TextBlock FontSize="19" Width="*" HorizontalAlignment="Left" Content="     SIGNATURE _________________________________" />
+		</Row>
+
+		<Row Margin="0,0,0,3">
+			<TextBlock FontSize="22" Width="*" HorizontalAlignment="Center" Content="Play Responsibly. Must be 21 to purchase." />
+		</Row>
+		<Row Margin="0,0,0,20">
+			<TextBlock FontSize="22" Width="*" HorizontalAlignment="Center" Content="Gambling Problem? Call 877-770-7867." />
+		</Row>
+
+		<Row Margin="0,0,0,2">
+			<TextBlock FontSize="22" TextWrapping="Wrap" Width="*" HorizontalAlignment="Center" Content="Tickets, transactions, drawings, and prizes are" />
+		</Row>
+		<Row Margin="0,0,0,2">
+			<TextBlock FontSize="22" Width="*" HorizontalAlignment="Center" Content="subject to Louisiana Lottery Corporation law," />
+		</Row>
+		<Row Margin="0,0,0,2">
+			<TextBlock FontSize="22" Width="*" HorizontalAlignment="Center" Content="rules, regulations, and directives. Refer to" />
+		</Row>
+		<Row Margin="0,0,0,20">
+			<TextBlock FontSize="22" Width="*" HorizontalAlignment="Center" Content="game brochure and game directive for details." />
+		</Row>
+
+		<Row Margin="0,0,0,2">
+			<TextBlock FontSize="22" Width="*" HorizontalAlignment="Center" Content="Prizes may only be claimed at any Walmart" />
+		</Row>
+		<Row Margin="0,0,0,20">
+			<TextBlock FontSize="22" Width="*" HorizontalAlignment="Center" Content="location or Lottery office." />
+		</Row>
+
+		<Row Margin="10">
+			<TextBlock Width="*" HorizontalAlignment="Center" FontSize="22"  >
+				<Run Content="{RetailerId}" />
+			</TextBlock>
+
+			<TextBlock Width="*" HorizontalAlignment="Center" FontSize="22"  >
+				<Run Content="{ExternalDeviceId}" />
+			</TextBlock>
+		</Row>
+
+		<Row Margin="5,0,5,10">
+			<Border Width="*" />
+			<Barcode HorizontalAlignment="Center" Width="500px" Format="Pdf417" Content="{Barcode}" />
+			<Border Width="*" />
+		</Row>
+
+		<Row Margin="5,10,5,20">
+			<TextBlock FontSize="23" Width="*" HorizontalAlignment="Center" Content="{SecondaryECN}" />
+		</Row>
+
+		<Row Margin="5,0,5,25">
+			<TextBlock FontSize="20" Width="*" HorizontalAlignment="Center" Content="{TicketNumber}" />
+		</Row>
+	</Body>
+</Receipt>

@@ -13,7 +13,7 @@
     <div class="main-content">
         <!-- Monaco Editor Container -->
         <div class="editor-container">
-            <MonacoEditor @ref="monacoEditor" Code="@initialCode" OnValidation="Validation" OnCodeChanged="RenderImageAsync" />
+            <MonacoEditor Code="@InitialCode" OnCodeChanged="HandleCodeChanged" OnValidation="HandleValidation" />
         </div>
 
         <!-- Image Container -->

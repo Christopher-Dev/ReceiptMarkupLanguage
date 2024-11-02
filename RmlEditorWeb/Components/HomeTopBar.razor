@@ -3,15 +3,12 @@
     <MudText>Version: @AppSettings.PreloadedValues.BuildVersion</MudText>
 
 
-    <MudIconButton Href="/downloads" Icon="fas fa-download" Size="Size.Small" Class="hover-blue"></MudIconButton>
-    <MudIconButton OnClick="@(() => NavToNewWindow("https://github.com/Christopher-Dev/ReceiptMarkupLanguage/wiki"))" Icon="fas fa-book" Size="Size.Small" Class="hover-blue"></MudIconButton>
-    <MudIconButton Href="/editor" Icon="fas fa-pencil-alt" Size="Size.Small" Class="hover-blue"></MudIconButton>
-    <MudIconButton Class="button-accent-color hover-blue" OnClick="@(() => NavToNewWindow("https://github.com/Christopher-Dev/ReceiptMarkupLanguage"))" Icon="@Icons.Custom.Brands.GitHub" Size="Size.Small"></MudIconButton>
-    <MudIconButton Icon="fas fa-message" Size="Size.Small" Class="hover-blue"></MudIconButton>
-
-    <MudIconButton OnClick="@(() => NavToNewWindow("https://github.com/Christopher-Dev/ReceiptMarkupLanguage/issues"))" Icon="fas fa-bug" Size="Size.Small" Class="hover-blue"></MudIconButton>
     
-    <MudIconButton Icon="fas fa-gear" Size="Size.Small" Class="hover-blue"></MudIconButton>
+    <MudButton OnClick="@(() => NavToNewWindow("https://github.com/Christopher-Dev/ReceiptMarkupLanguage/wiki"))" StartIcon="fas fa-book" Class="hover-blue">Documentation</MudButton>
+    
+    <MudButton Href="/editor" StartIcon="fas fa-pencil-alt" Class="hover-blue">Editor</MudButton>
+            
+    <MudButton StartIcon="fas fa-gear" Class="hover-blue">Settings</MudButton>
 </div>
 
 
