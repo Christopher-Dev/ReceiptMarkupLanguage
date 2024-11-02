@@ -13,11 +13,12 @@ builder.Services.AddControllers();
 // Configure CORS to allow only the specific base addresses
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigins", policy =>
+    options.AddPolicy("CorsPolicy", policyBuilder =>
     {
-        policy.WithOrigins(allowedOrigins)
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policyBuilder.WithOrigins(allowedOrigins) // Use allowedOrigins variable here
+                     .AllowAnyHeader()
+                     .AllowAnyMethod()
+                     .AllowCredentials();
     });
 });
 
@@ -36,7 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Use CORS with the specific origins policy
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("CorsPolicy");
 
 // Serve static files for the Blazor WebAssembly app
 app.UseBlazorFrameworkFiles();

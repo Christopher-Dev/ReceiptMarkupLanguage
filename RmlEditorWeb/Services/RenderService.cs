@@ -13,26 +13,26 @@ namespace RmlEditorWeb.Services
         Task LeaveGroup(string groupName);
         Task StartConnectionAsync();
         Task StopConnectionAsync();
+
         event Action<CompletedRender> OnRenderResponseReceived;
     }
-
-
 
     public class RenderService : IRenderService
     {
         private readonly HubConnection _hubConnection;
-
         public event Action<CompletedRender> OnRenderResponseReceived;
-
-
-
 
         public RenderService(string hubUrl)
         {
             _hubConnection = new HubConnectionBuilder()
                 .WithUrl(hubUrl)
-                .WithAutomaticReconnect() // Optional: enable automatic reconnection
+                .WithAutomaticReconnect()
                 .Build();
+
+            _hubConnection.On("Pong", () =>
+            {
+                Console.WriteLine("Received Pong response.");
+            });
 
             _hubConnection.Reconnecting += async (error) =>
             {
@@ -65,12 +65,10 @@ namespace RmlEditorWeb.Services
             _hubConnection.On<string, string>("ReceiveRenderRequest", (connectionId, renderRequestData) =>
             {
                 var result = JsonSerializer.Deserialize<SmartResponse<CompletedRender>>(renderRequestData);
-
                 if (result != null && result.Data != null)
                 {
                     OnRenderResponseReceived?.Invoke(result.Data);
                 }
-
                 Console.WriteLine($"Render request from {connectionId}: {renderRequestData}");
             });
 
@@ -100,6 +98,7 @@ namespace RmlEditorWeb.Services
                 }
             }
         }
+
         public async Task StopConnectionAsync()
         {
             if (_hubConnection.State == HubConnectionState.Connected)
@@ -108,9 +107,41 @@ namespace RmlEditorWeb.Services
                 Console.WriteLine("Connection stopped.");
             }
         }
-        public async Task RequestRender(string renderRequestData) => await _hubConnection.InvokeAsync("RequestRender", renderRequestData);
-        public async Task JoinGroup(string groupName) => await _hubConnection.InvokeAsync("JoinGroup", groupName);
-        public async Task LeaveGroup(string groupName) => await _hubConnection.InvokeAsync("LeaveGroup", groupName);
-    }
 
+        public async Task RequestRender(string renderRequestData)
+        {
+            try
+            {
+                await _hubConnection.InvokeAsync("RequestRender", renderRequestData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error invoking RequestRender: {ex.Message}");
+            }
+        }
+
+        public async Task JoinGroup(string groupName)
+        {
+            try
+            {
+                await _hubConnection.InvokeAsync("JoinGroup", groupName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error invoking JoinGroup: {ex.Message}");
+            }
+        }
+
+        public async Task LeaveGroup(string groupName)
+        {
+            try
+            {
+                await _hubConnection.InvokeAsync("LeaveGroup", groupName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error invoking LeaveGroup: {ex.Message}");
+            }
+        }
+    }
 }

@@ -37,6 +37,8 @@ namespace RmlEditorWeb.Pages
         {
             RenderService.OnRenderResponseReceived += HandleRenderResponse;
 
+            await RenderingService.StartConnectionAsync();
+
         }
         private void HandleRenderResponse(CompletedRender message)
         {
