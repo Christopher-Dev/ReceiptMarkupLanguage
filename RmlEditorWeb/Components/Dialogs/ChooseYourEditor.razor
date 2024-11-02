@@ -7,14 +7,14 @@
     </TitleContent>
     <DialogContent>
         <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Center" Style="margin-bottom: 2rem;">
-            <MudButton Variant="Variant.Text" Class="template-button" Style="padding: 20px;" OnMouseOver="(e) => OnHover(e, 0)" OnMouseOut="(e) => OnHover(e, -1)">
+            <MudButton Variant="Variant.Text" Class="template-button" Style="padding: 20px;" OnMouseOver="(e) => OnHover(e, 0)" OnMouseOut="(e) => OnHover(e, -1)" OnClick="@(() => SelectTemplate("Blank"))">
                 <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="1">
                     <MudIcon Icon="fas fa-file" Size="Size.Large" Style="color: #4CAF50; margin-left: 8px;" />
                     <MudText Align="Align.Center" Style="margin-top: 12px;">Blank Template</MudText>
                 </MudStack>
             </MudButton>
 
-            <MudButton Variant="Variant.Text" Class="template-button" Style="padding: 20px;" OnMouseOver="(e) => OnHover(e, 1)" OnMouseOut="(e) => OnHover(e, -1)">
+            <MudButton Variant="Variant.Text" Class="template-button" Style="padding: 20px;" OnMouseOver="(e) => OnHover(e, 1)" OnMouseOut="(e) => OnHover(e, -1)" OnClick="@(() => SelectTemplate("Template"))">
                 <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="1">
                     <MudIcon Icon="fas fa-receipt" Size="Size.Large" Style="color: #2196F3; margin-left: 8px;" />
                     <MudText Align="Align.Center" Style="margin-top: 12px;">Prebuilt Template</MudText>
@@ -31,19 +31,12 @@
     [CascadingParameter]
     private MudDialogInstance MudDialog { get; set; }
 
-    /// <summary>
-    /// Closes the dialog without making a selection.
-    /// </summary>
-    private void Cancel()
-    {
-        MudDialog.Cancel();
-    }
 
     /// <summary>
-    /// Closes the dialog and returns the selected template.
+    /// Closes the dialog and returns the selected template type.
     /// </summary>
     /// <param name="template">The selected template identifier.</param>
-    private void SelectTemplate(string template)
+    private async Task SelectTemplate(string template)
     {
         MudDialog.Close(DialogResult.Ok(template));
     }

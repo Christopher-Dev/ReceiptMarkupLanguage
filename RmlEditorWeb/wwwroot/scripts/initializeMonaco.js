@@ -238,7 +238,7 @@ window.initializeMonaco = (editorId, initialCode, dotNetHelper, enableLogging) =
     // Set the logging based on the passed boolean
     window.setMonacoLogging(enableLogging);
 
-    window.monacoLog(`Initializing Monaco editor with ID: ${editorId}, initial code length: ${initialCode.length}`);
+    window.monacoLog(`Initializing Monaco editor with ID: ${editorId}`);
 
     if (window.monacoEditors[editorId]) {
         window.monacoLog(`Editor with ID ${editorId} already initialized.`);

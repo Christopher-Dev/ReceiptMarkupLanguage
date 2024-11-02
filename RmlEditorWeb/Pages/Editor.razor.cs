@@ -14,12 +14,7 @@ namespace RmlEditorWeb.Pages
     public partial class Editor
     {
         private MonacoEditor? monacoEditor;
-        private string initialCode = Constants.Template;
-        private string editorOutput = string.Empty;
-        private bool isValid = true;
-        private string codeContent = string.Empty;
-
-
+        
         public async Task Validation()
         {
             string code = await monacoEditor.GetCodeAsync();
@@ -27,14 +22,17 @@ namespace RmlEditorWeb.Pages
             StateHasChanged();
         }
 
+        [Inject]
+        private HttpClient Http { get; set; }
 
+        private bool isLoading = true;
 
+        protected override async Task OnInitializedAsync()
+        {
 
-        //private bool Validated = false;
+        }
 
-        //private MonacoEditor monacoEditor;
-
-        private string InitialCode = Constants.Template;
+        private string InitialCode;
 
         public string CurrentCode { get; set; } = string.Empty;
 
@@ -73,27 +71,54 @@ namespace RmlEditorWeb.Pages
             // Check the dialog result
             if (!result.Canceled)
             {
-                // Perform actions if the dialog was confirmed
-                // Reload data or perform deletion logic here
+                isLoading = true;
+
+                try
+                {
+                    // Determine action based on result data
+                    if (result.Data is string && (string)result.Data == "Template")
+                    {
+                        // Path to the XML file relative to wwwroot
+                        var xmlFilePath = "assets/ExampleTemplate.xml";
+
+                        // Fetch the XML file
+                        var results = await Http.GetStringAsync(xmlFilePath);
+                        
+                        await monacoEditor.SetCodeAsync(results);
+
+                        StateHasChanged();
+                    }
+                    else if (result.Data is string && (string)result.Data == "Blank")
+                    {
+                        // Set to empty string for Blank option
+                        InitialCode = string.Empty;
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions
+                    InitialCode = $"Error loading Template: {ex.Message}";
+                }
+                finally
+                {
+                    isLoading = false;
+                }
             }
         }
 
 
 
 
-        protected override async Task OnInitializedAsync()
-        {
-            
-            await base.OnInitializedAsync();
-        }
+
 
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await Task.Delay(500); // Adjust delay as needed
-                await SelectEditorType();
+                //await Task.Delay(100); // Adjust delay as needed
+                //await SelectEditorType();
             }
 
             await base.OnAfterRenderAsync(firstRender);
