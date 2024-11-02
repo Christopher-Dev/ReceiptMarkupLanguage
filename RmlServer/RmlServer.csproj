@@ -19,10 +19,12 @@
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="ThreeTwoSix.ReceiptRenderer" Version="17.0.17-preview" />
-  </ItemGroup>
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.10" PrivateAssets="all" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\RmlCommon\RmlCommon.csproj" />
+	  <ProjectReference Include="..\RmlEditorWeb\RmlEditorWeb.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -20,6 +20,14 @@ namespace RmlServer.Controllers
             _receiptRenderingService = new ReceiptRenderingService();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> TestGet()
+        {
+            return Ok();
+        }
+
+
+
         [HttpPost]
         public SmartResponse<CompletedRender> RenderImage([FromBody] SmartRequest<RenderRequest> request)
         {

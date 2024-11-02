@@ -23,6 +23,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["RmlServer/RmlServer.csproj", "RmlServer/"]
+COPY ["RmlCommon/RmlCommon.csproj", "RmlCommon/"]
+COPY ["RmlEditorWeb/RmlEditorWeb.csproj", "RmlEditorWeb/"]
 RUN dotnet restore "./RmlServer/RmlServer.csproj"
 COPY . .
 WORKDIR "/src/RmlServer"

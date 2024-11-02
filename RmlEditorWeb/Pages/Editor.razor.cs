@@ -13,11 +13,11 @@ namespace RmlEditorWeb.Pages
 {
     public partial class Editor
     {
-        private MonacoEditor? monacoEditor;
+        private MonacoEditor? monacoEditorRef;
         
         public async Task Validation()
         {
-            string code = await monacoEditor.GetCodeAsync();
+            string code = await monacoEditorRef.GetCodeAsync();
 
             StateHasChanged();
         }
@@ -32,7 +32,7 @@ namespace RmlEditorWeb.Pages
 
         }
 
-        private string InitialCode;
+        private string InitialCode = "";
 
         public string CurrentCode { get; set; } = string.Empty;
 
@@ -83,10 +83,14 @@ namespace RmlEditorWeb.Pages
 
                         // Fetch the XML file
                         var results = await Http.GetStringAsync(xmlFilePath);
-                        
-                        await monacoEditor.SetCodeAsync(results);
 
-                        StateHasChanged();
+                        if (monacoEditorRef != null)
+                        { 
+                            await monacoEditorRef.SetCodeAsync(results);
+                        
+                            StateHasChanged();
+                        }
+
                     }
                     else if (result.Data is string && (string)result.Data == "Blank")
                     {
@@ -117,8 +121,8 @@ namespace RmlEditorWeb.Pages
         {
             if (firstRender)
             {
-                //await Task.Delay(100); // Adjust delay as needed
-                //await SelectEditorType();
+                await Task.Delay(500); // Adjust delay as needed
+                await SelectEditorType();
             }
 
             await base.OnAfterRenderAsync(firstRender);
@@ -155,7 +159,7 @@ namespace RmlEditorWeb.Pages
                 Stopwatch sw = Stopwatch.StartNew();
 
                 // Retrieve code from the editor
-                CurrentCode = await monacoEditor.GetCodeAsync();
+                CurrentCode = await monacoEditorRef.GetCodeAsync();
                 GetCodeTime = sw.ElapsedMilliseconds.ToString() + "ms";
 
                 // Set the base URI to the specified address

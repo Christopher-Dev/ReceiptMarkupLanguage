@@ -6,21 +6,18 @@
 @inject IJSRuntime JS
 
 
-<EditorTopBar></EditorTopBar>
+<EditorTopBar OnRenderClick="RenderImageAsync"></EditorTopBar>
 
 <div class="outer-container">
     <!-- Main Content -->
     <div class="main-content">
         <!-- Monaco Editor Container -->
         <div class="editor-container">
-            <MonacoEditor Code="@InitialCode" OnCodeChanged="HandleCodeChanged" OnValidation="HandleValidation" />
+            <MonacoEditor @ref="monacoEditorRef" Code="@InitialCode" OnCodeChanged="HandleCodeChanged" OnValidation="HandleValidation" />
         </div>
 
         <!-- Image Container -->
         <div class="image-container">
-
-            <MudButton OnClick="RenderImageAsync">Total Time to Render: @RenderTime</MudButton>
-
             @if (!string.IsNullOrEmpty(RenderedImageData))
             {
                 <img src="@($"data:image/png;base64,{RenderedImageData}")" alt="Rendered Image" class="shadowed-image" />
@@ -29,7 +26,7 @@
             {
                 <div class="no-image-container">
                     <MudText>
-                        Real Time Rendering in the Browser Coming Soon
+                        Click Render to view your Receipt
                     </MudText>
                 </div>
             }

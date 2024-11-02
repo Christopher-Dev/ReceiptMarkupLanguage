@@ -2,18 +2,18 @@ using RmlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Define the base address for CORS
+var allowedOrigin = builder.Environment.IsDevelopment() ? "http://localhost:32785" : "https://rmltools.com";
+
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-// Configure CORS to allow all origins
+// Configure CORS to allow only the base address
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins(allowedOrigin)
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -22,17 +22,23 @@ builder.Services.AddCors(options =>
 // Add SignalR services
 builder.Services.AddSignalR();
 
+// Add support for serving Blazor WebAssembly static files
+builder.Services.AddRazorComponents();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Swagger setup removed
 }
 
-// Use CORS with the AllowAll policy
-app.UseCors("AllowAll");
+// Use CORS with the specific origin policy
+app.UseCors("AllowSpecificOrigin");
+
+// Serve static files for the Blazor WebAssembly app
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
@@ -40,6 +46,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Map the SignalR hub endpoint
-app.MapHub<RenderHub>("/yourHub"); // Replace "YourHub" with the name of your hub class
+app.MapHub<RenderHub>("/RenderHub");
+
+// Map fallback to the Blazor WebAssembly app
+app.MapFallbackToFile("index.html");
 
 app.Run();

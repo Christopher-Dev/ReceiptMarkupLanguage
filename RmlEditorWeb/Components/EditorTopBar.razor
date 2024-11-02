@@ -8,11 +8,13 @@
 
     <MudChip T="string" Disabled="true" Color="@validationColor">Success</MudChip>
 
+    <MudButton Style="margin-left: 0.5rem;" Color="Color.Inherit">Start Collaberation</MudButton>
+
     <MudButton Style="margin-left: 0.5rem;" Color="Color.Inherit" OnClick="GlobalVariablesDialog">Global Variables</MudButton>
 
     <MudButton Style="margin-left: 0.5rem;" Color="Color.Inherit" OnClick="RepeaterVariablesDialog">Repeater Data</MudButton>
 
-    <MudButton Style="margin-left: 0.5rem;" Color="Color.Info" Variant="Variant.Filled">Render</MudButton>
+    <MudButton Style="margin-left: 0.5rem;" Color="Color.Info" OnClick="HandleClick" Variant="Variant.Filled">Render</MudButton>
 
 </div>
 
@@ -23,6 +25,14 @@
     private string validationTextError = "Code has Errors!";
     private string validationText = "Code is Valid";
 
+    [Parameter]
+    public EventCallback OnRenderClick { get; set; }
+
+
+    private async Task HandleClick()
+    {
+        await OnRenderClick.InvokeAsync();
+    }
 
     private async Task RepeaterVariablesDialog()
     {
