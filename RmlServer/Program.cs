@@ -2,18 +2,20 @@ using RmlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Define the base address for CORS
-var allowedOrigin = builder.Environment.IsDevelopment() ? "http://localhost:32785" : "https://rmltools.com";
+// Define allowed origins for CORS
+var allowedOrigins = builder.Environment.IsDevelopment()
+    ? new[] { "http://localhost:32785" }
+    : new[] { "https://rmltools.com" };
 
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Configure CORS to allow only the base address
+// Configure CORS to allow only the specific base addresses
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin", policy =>
+    options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy.WithOrigins(allowedOrigin)
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -33,8 +35,8 @@ if (app.Environment.IsDevelopment())
     // Swagger setup removed
 }
 
-// Use CORS with the specific origin policy
-app.UseCors("AllowSpecificOrigin");
+// Use CORS with the specific origins policy
+app.UseCors("AllowSpecificOrigins");
 
 // Serve static files for the Blazor WebAssembly app
 app.UseBlazorFrameworkFiles();

@@ -1,11 +1,24 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using RmlCommon.ServerModels;
+using RmlCommon;
 using System.Threading.Tasks;
+using ThreeTwoSix.ReceiptRenderer;
+using ZXing;
 
 namespace RmlServer
 {
 
     public class RenderHub : Hub
     {
+
+        private readonly ReceiptRenderingService _receiptRenderingService;
+
+        public RenderHub()
+        {
+            _receiptRenderingService = new ReceiptRenderingService();
+        }
+
+
         // Method triggered when a client connects to the hub
         public override async Task OnConnectedAsync()
         {
@@ -34,16 +47,65 @@ namespace RmlServer
 
 
         // Method that allows a client to request a render
-        public async Task RequestRender(string renderRequestData)
+        public async Task RequestRender(SmartRequest<RenderRequest> request)
         {
-            // Render the Image Here
+            try
+            {
+
+                // Step 1: Query RAM DB for Body and prepare receipt models
+
+                //DataContextModel dataModel = new DataContextModel();
+                //ResourcesModel resourcesModel = new ResourcesModel();
+
+                //ReceiptModel receipt = new ReceiptModel(dataModel, resourcesModel, request.Data.BodyContents);
+
+                // Step 2: Render based on OneBitPng flag
+                byte[] results;
+
+                if (request.Data != null)
+                {
+                    if (request.Data.OneBitPng)
+                    {
+                        results = _receiptRenderingService.RenderOneBitPng(request.Data.BodyContents);
+                    }
+                    else
+                    {
+                        results = _receiptRenderingService.Render(request.Data.BodyContents, request.Data.MimeType);
+                    }
+
+                    // Step 3: Return the rendered image as a response
+                    var result = new SmartResponse<CompletedRender>
+                    {
+                        Data = new CompletedRender(request.Data.Id, results)
+                    };
+                    var content = JsonContent.Create(result);
+                    await Clients.Caller.SendAsync("ReceiveRenderRequest", Context.ConnectionId, content);
 
 
+                }
+                else
+                {
+                    var result = new SmartResponse<CompletedRender>
+                    {
+                        Error = "Request Data was null!!"
+                    };
+                    var content = JsonContent.Create(result);
+                    await Clients.Caller.SendAsync("ReceiveRenderRequest", Context.ConnectionId, content);
 
 
+                }
+            }
+            catch (Exception ex)
+            {
+                var result =  new SmartResponse<CompletedRender> 
+                { 
+                    Error = "An error occurred during rendering." 
+                };
+                
+                var content = JsonContent.Create(result);
+                await Clients.Caller.SendAsync("ReceiveRenderRequest", Context.ConnectionId, content);
 
-            // Broadcast the render request to all clients in a specific group or globally
-            await Clients.All.SendAsync("ReceiveRenderRequest", Context.ConnectionId, renderRequestData);
+            }
         }
 
 

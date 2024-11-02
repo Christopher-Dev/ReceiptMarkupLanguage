@@ -7,6 +7,9 @@ using System.Net.Http.Json;
 using RmlCommon;
 using RmlCommon.ServerModels;
 using RmlEditorWeb.Components.Dialogs;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using RmlEditorWeb.Services;
 
 
 namespace RmlEditorWeb.Pages
@@ -14,7 +17,7 @@ namespace RmlEditorWeb.Pages
     public partial class Editor
     {
         private MonacoEditor? monacoEditorRef;
-        
+
         public async Task Validation()
         {
             string code = await monacoEditorRef.GetCodeAsync();
@@ -25,13 +28,26 @@ namespace RmlEditorWeb.Pages
         [Inject]
         private HttpClient Http { get; set; }
 
+        [Inject]
+        public IRenderService RenderService { get; set; }
+
         private bool isLoading = true;
 
         protected override async Task OnInitializedAsync()
         {
+            RenderService.OnRenderResponseReceived += HandleRenderResponse;
 
         }
+        private void HandleRenderResponse(CompletedRender message)
+        {
+            RenderedImageData = Convert.ToBase64String(message.Receipt);
+            InvokeAsync(StateHasChanged); // Update the UI
+        }
 
+        public void Dispose()
+        {
+            RenderService.OnRenderResponseReceived -= HandleRenderResponse;
+        }
         private string InitialCode = "";
 
         public string CurrentCode { get; set; } = string.Empty;
@@ -156,58 +172,36 @@ namespace RmlEditorWeb.Pages
         {
             try
             {
-                Stopwatch sw = Stopwatch.StartNew();
-
-                // Retrieve code from the editor
-                CurrentCode = await monacoEditorRef.GetCodeAsync();
-                GetCodeTime = sw.ElapsedMilliseconds.ToString() + "ms";
-
-                // Set the base URI to the specified address
-                var baseAddress = "https://localhost:32785";
-
-                // Create an instance of HttpClient with the specified base address
-                using HttpClient client = new HttpClient { BaseAddress = new Uri(baseAddress) };
-
-                // Create the RenderRequest object
-                var renderRequest = new RenderRequest
+                if (monacoEditorRef != null)
                 {
-                    Id = Guid.NewGuid(),         // Generate a unique ID or use a specific ID if needed
-                    BodyContents = CurrentCode,    // Assuming CurrentCode holds the data for "RawContents"
-                    MimeType = Constants.PNG,
-                    OneBitPng = true,
-                };
+                    // Retrieve code from the editor
+                    CurrentCode = await monacoEditorRef.GetCodeAsync();
 
-                var request = new SmartRequest<RenderRequest>()
-                {
-                    Data = renderRequest,
-                };
-
-                // Serialize the RenderRequest object
-                var content = JsonContent.Create(request);
-
-                // Make the POST request to the new endpoint
-                HttpResponseMessage response = await client.PostAsync("/api/Render/RenderImage", content);
-
-                // Handle the response
-                if (response.IsSuccessStatusCode)
-                {
-                    // Deserialize the response as RenderResponse
-                    var renderResponse = await response.Content.ReadFromJsonAsync<SmartResponse<CompletedRender>>();
-
-                    if (renderResponse.Data != null)
+                    // Create the RenderRequest object
+                    var renderRequest = new RenderRequest
                     {
-                        var stringResult = Convert.ToBase64String(renderResponse.Data.Receipt);
+                        Id = Guid.NewGuid(),         // Generate a unique ID or use a specific ID if needed
+                        BodyContents = CurrentCode,    // Assuming CurrentCode holds the data for "RawContents"
+                        MimeType = Constants.PNG,
+                        OneBitPng = true,
+                    };
 
-                        RenderedImageData = stringResult;
-                    }
-                    else
+                    var request = new SmartRequest<RenderRequest>
                     {
-                        Snackbar.Add("Error: Unable to parse the response.", Severity.Error);
-                    }
+                        Data = renderRequest,
+                    };
+
+                    // Serialize the request object to JSON
+                    var jsonRequest = JsonSerializer.Serialize(request);
+
+                    // Send the request to the SignalR hub method "RenderRequest"
+                    await RenderingService.RequestRender(jsonRequest);
+
+                    Snackbar.Add("Render request sent to the server.", Severity.Info);
                 }
                 else
                 {
-                    Snackbar.Add($"Error: {response.ReasonPhrase}", Severity.Error);
+                    Snackbar.Add("Editor doesn't exist!", Severity.Error);
                 }
             }
             catch (Exception ex)
@@ -215,5 +209,6 @@ namespace RmlEditorWeb.Pages
                 Snackbar.Add($"{ex.Message}", Severity.Error);
             }
         }
+
     }
 }
