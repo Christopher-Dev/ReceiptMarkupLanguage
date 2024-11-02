@@ -14,15 +14,14 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 // Bind app settings from configuration
 var appSettings = new AppSettings();
+
 builder.Configuration.GetSection("AppSettings").Bind(appSettings);
+
 builder.Services.AddSingleton(appSettings);
 
-// Configure RenderService with environment-specific URL
-var renderHubUrl = builder.HostEnvironment.IsDevelopment()
-    ? "http://localhost:32785/RenderHub" // Development URL
-    : "https://rmltools.com/RenderHub";  // Production URL
 
-builder.Services.AddSingleton<IRenderService>(sp => new RenderService(renderHubUrl));
+
+builder.Services.AddScoped<RenderService>();
 
 // Register other services
 builder.Services.AddScoped<HelperMethodService>();

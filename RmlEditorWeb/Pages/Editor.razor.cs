@@ -28,28 +28,13 @@ namespace RmlEditorWeb.Pages
         [Inject]
         private HttpClient Http { get; set; }
 
-        [Inject]
-        public IRenderService RenderService { get; set; }
-
         private bool isLoading = true;
 
         protected override async Task OnInitializedAsync()
         {
-            RenderService.OnRenderResponseReceived += HandleRenderResponse;
-
-            await RenderingService.StartConnectionAsync();
 
         }
-        private void HandleRenderResponse(CompletedRender message)
-        {
-            RenderedImageData = Convert.ToBase64String(message.Receipt);
-            InvokeAsync(StateHasChanged); // Update the UI
-        }
-
-        public void Dispose()
-        {
-            RenderService.OnRenderResponseReceived -= HandleRenderResponse;
-        }
+        
         private string InitialCode = "";
 
         public string CurrentCode { get; set; } = string.Empty;
@@ -197,7 +182,6 @@ namespace RmlEditorWeb.Pages
                     var jsonRequest = JsonSerializer.Serialize(request);
 
                     // Send the request to the SignalR hub method "RenderRequest"
-                    await RenderingService.RequestRender(jsonRequest);
 
                     Snackbar.Add("Render request sent to the server.", Severity.Info);
                 }

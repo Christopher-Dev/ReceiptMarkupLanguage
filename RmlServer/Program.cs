@@ -49,7 +49,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Map the SignalR hub endpoint
-app.MapHub<RenderHub>("/RenderHub");
+app.MapHub<RenderHub>("/renderHub");
 
 // Map fallback to the Blazor WebAssembly app
 app.MapFallbackToFile("index.html");

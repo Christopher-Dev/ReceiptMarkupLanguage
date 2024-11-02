@@ -6,142 +6,35 @@ using System.Text.Json;
 
 namespace RmlEditorWeb.Services
 {
-    public interface IRenderService
-    {
-        Task RequestRender(string renderRequestData);
-        Task JoinGroup(string groupName);
-        Task LeaveGroup(string groupName);
-        Task StartConnectionAsync();
-        Task StopConnectionAsync();
-
-        event Action<CompletedRender> OnRenderResponseReceived;
-    }
-
-    public class RenderService : IRenderService
+    public class RenderService : IAsyncDisposable
     {
         private readonly HubConnection _hubConnection;
-        public event Action<CompletedRender> OnRenderResponseReceived;
 
-        public RenderService(string hubUrl)
+        public event Action<string> OnMessageReceived;
+
+        public RenderService(NavigationManager navigationManager)
         {
+            // Assuming the server and client are hosted on the same domain.
+            // Adjust the URL if hosted separately.
             _hubConnection = new HubConnectionBuilder()
-                .WithUrl(hubUrl)
+                .WithUrl($"{navigationManager.BaseUri}renderHub")
                 .WithAutomaticReconnect()
                 .Build();
 
-            _hubConnection.On("Pong", () =>
+            _hubConnection.On<string>("ReceiveMessage", (message) =>
             {
-                Console.WriteLine("Received Pong response.");
-            });
-
-            _hubConnection.Reconnecting += async (error) =>
-            {
-                Console.WriteLine("Reconnecting...");
-                await Task.CompletedTask;
-            };
-
-            _hubConnection.Reconnected += async (connectionId) =>
-            {
-                Console.WriteLine("Reconnected!");
-                await Task.CompletedTask;
-            };
-
-            // Handle connection events
-            _hubConnection.On<string>("OnConnect", (connectionId) =>
-            {
-                Console.WriteLine($"Connected with ID: {connectionId}");
-            });
-
-            _hubConnection.On<string>("OnMemberJoin", (connectionId) =>
-            {
-                Console.WriteLine($"Member joined: {connectionId}");
-            });
-
-            _hubConnection.On<string>("OnMemberDisconnect", (connectionId) =>
-            {
-                Console.WriteLine($"Member disconnected: {connectionId}");
-            });
-
-            _hubConnection.On<string, string>("ReceiveRenderRequest", (connectionId, renderRequestData) =>
-            {
-                var result = JsonSerializer.Deserialize<SmartResponse<CompletedRender>>(renderRequestData);
-                if (result != null && result.Data != null)
-                {
-                    OnRenderResponseReceived?.Invoke(result.Data);
-                }
-                Console.WriteLine($"Render request from {connectionId}: {renderRequestData}");
-            });
-
-            _hubConnection.On<string, string>("GroupMemberJoined", (connectionId, groupName) =>
-            {
-                Console.WriteLine($"Member {connectionId} joined group {groupName}");
-            });
-
-            _hubConnection.On<string, string>("GroupMemberLeft", (connectionId, groupName) =>
-            {
-                Console.WriteLine($"Member {connectionId} left group {groupName}");
+                OnMessageReceived?.Invoke(message);
             });
         }
 
-        public async Task StartConnectionAsync()
+        public async Task StartAsync()
         {
-            if (_hubConnection.State == HubConnectionState.Disconnected)
-            {
-                try
-                {
-                    await _hubConnection.StartAsync();
-                    Console.WriteLine("Connection started!");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error starting connection: {ex.Message}");
-                }
-            }
+            await _hubConnection.StartAsync();
         }
 
-        public async Task StopConnectionAsync()
+        public async ValueTask DisposeAsync()
         {
-            if (_hubConnection.State == HubConnectionState.Connected)
-            {
-                await _hubConnection.StopAsync();
-                Console.WriteLine("Connection stopped.");
-            }
-        }
-
-        public async Task RequestRender(string renderRequestData)
-        {
-            try
-            {
-                await _hubConnection.InvokeAsync("RequestRender", renderRequestData);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error invoking RequestRender: {ex.Message}");
-            }
-        }
-
-        public async Task JoinGroup(string groupName)
-        {
-            try
-            {
-                await _hubConnection.InvokeAsync("JoinGroup", groupName);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error invoking JoinGroup: {ex.Message}");
-            }
-        }
-
-        public async Task LeaveGroup(string groupName)
-        {
-            try
-            {
-                await _hubConnection.InvokeAsync("LeaveGroup", groupName);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error invoking LeaveGroup: {ex.Message}");
-            }
+            await _hubConnection.DisposeAsync();
         }
     }
 }
