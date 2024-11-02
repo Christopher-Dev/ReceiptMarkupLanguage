@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmlEditorWeb", "RmlEditorWe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmlServer", "RmlServer\RmlServer.csproj", "{BD6EF399-E0BA-431F-A35A-530284094DDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmlCommon", "RmlCommon\RmlCommon.csproj", "{A4A1BD72-6030-4F52-9B20-D1AD2C1AF4A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmlCommon", "RmlCommon\RmlCommon.csproj", "{A4A1BD72-6030-4F52-9B20-D1AD2C1AF4A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

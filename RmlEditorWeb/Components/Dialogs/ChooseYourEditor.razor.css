@@ -1,0 +1,11 @@
+﻿.template-button {
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 1.1em; /* Slightly increase font size */
+}
+
+    .template-button:hover {
+        border-color: #4CAF50;
+    }

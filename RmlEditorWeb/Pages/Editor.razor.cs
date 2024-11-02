@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Net.Http.Json;
 using RmlCommon;
 using RmlCommon.ServerModels;
+using RmlEditorWeb.Components.Dialogs;
 
 
 namespace RmlEditorWeb.Pages
@@ -47,10 +48,55 @@ namespace RmlEditorWeb.Pages
 
         public string GetCodeTime { get; set; } = "UnRendered";
 
+
+        private async Task SelectEditorType()
+        {
+            // Define dialog parameters if needed (for passing data to the dialog)
+            var parameters = new DialogParameters();
+
+            // Define dialog options with CloseButton disabled and BackdropClick set to false
+            var options = new DialogOptions
+            {
+                CloseButton = false, // Disable the close button in the header
+                MaxWidth = MaxWidth.ExtraSmall,
+                FullWidth = true,
+                BackdropClick = false, // Prevent closing the dialog by clicking outside
+                CloseOnEscapeKey = false // Prevent closing the dialog with the Escape key
+            };
+
+            // Show the dialog with parameters and options
+            var dialog = DialogService.Show<ChooseYourEditor>("", parameters, options);
+
+            // Wait for the dialog result
+            var result = await dialog.Result;
+
+            // Check the dialog result
+            if (!result.Canceled)
+            {
+                // Perform actions if the dialog was confirmed
+                // Reload data or perform deletion logic here
+            }
+        }
+
+
+
+
         protected override async Task OnInitializedAsync()
         {
-
+            
             await base.OnInitializedAsync();
+        }
+
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await Task.Delay(500); // Adjust delay as needed
+                await SelectEditorType();
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
         }
 
 
