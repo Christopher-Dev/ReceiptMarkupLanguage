@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using RmlEditorWeb;
 using RmlEditorWeb.Services;
-using RmlEditorWeb.ViewModel;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -16,7 +15,6 @@ var appSettings = new AppSettings();
 builder.Configuration.GetSection("AppSettings").Bind(appSettings);
 builder.Services.AddSingleton(appSettings);
 
-builder.Services.AddSingleton<IReceiptViewModel, ReceiptViewModel>();
 
 // Configure RenderService with environment-specific URL
 var renderHubUrl = builder.HostEnvironment.IsDevelopment()

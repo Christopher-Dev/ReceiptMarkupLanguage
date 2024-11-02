@@ -1,5 +1,4 @@
 ﻿@using RmlEditorWeb.Components.Dialogs
-@using RmlEditorWeb.ViewModel
 <div class="top-bar">
 
     <MudButton Color="Color.Inherit" StartIcon="@Icons.Material.Filled.Home" Href="/">Home</MudButton>
@@ -38,7 +37,7 @@
     {
         // Define dialog parameters if needed (for passing data to the dialog)
         var parameters = new DialogParameters();
-      
+
         // Define dialog options
         var options = new DialogOptions
         {
@@ -90,10 +89,7 @@
 
 
     protected override async Task OnInitializedAsync()
-    {
-        // Subscribe to the ValidationResult event
-        ReceiptViewModel.ValidationResult += OnValidationResultChanged;
-        
+    {       
         await base.OnInitializedAsync();
     }
 
@@ -132,7 +128,6 @@
 
     public void Dispose()
     {
-        // Unsubscribe from the ValidationResult event to prevent memory leaks
-        ReceiptViewModel.ValidationResult -= OnValidationResultChanged;
+        
     }
 }
