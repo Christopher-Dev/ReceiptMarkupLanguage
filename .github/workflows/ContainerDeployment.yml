@@ -1,4 +1,4 @@
-name: Publish Major Version Update
+name: Publish Server Renderer
 
 on:
   workflow_dispatch:
