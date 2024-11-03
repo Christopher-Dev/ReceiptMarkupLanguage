@@ -27,4 +27,11 @@ builder.Services.AddScoped<RenderService>();
 builder.Services.AddScoped<HelperMethodService>();
 builder.Services.AddMudServices();
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+
+var renderService = host.Services.GetRequiredService<RenderService>();
+await renderService.StartAsync();
+
+await host.RunAsync();
+
+

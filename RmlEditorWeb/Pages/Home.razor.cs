@@ -12,9 +12,6 @@ namespace RmlEditorWeb.Pages
         protected override async Task OnInitializedAsync()
         {
 
-            // Start the SignalR connection
-            await RenderService.StartAsync();
-
             await base.OnInitializedAsync();
         }
 
