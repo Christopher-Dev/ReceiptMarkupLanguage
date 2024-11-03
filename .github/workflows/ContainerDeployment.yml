@@ -31,7 +31,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./ReceiptBuilder.Server/Dockerfile  # Update path to your Dockerfile
+          file: ./RmlServer/Dockerfile  # Update path to your Dockerfile
           push: true
           tags: ghcr.io/christopher-dev/receiptmarkuplanguage:latest
           build-args: |
