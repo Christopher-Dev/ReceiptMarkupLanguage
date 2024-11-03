@@ -171,7 +171,6 @@ namespace RmlEditorWeb.Pages
                     
                     // Send the request to the SignalR hub method "RenderRequest"
 
-                    Snackbar.Add("Render request sent to the server.", Severity.Info);
                 }
                 else
                 {
@@ -188,8 +187,6 @@ namespace RmlEditorWeb.Pages
         {
             RenderService.OnRenderResultReceived -= HandleRenderResultReceived;
             RenderService.OnServerErrorReceived -= HandleServerErrorReceived;
-
-            await RenderService.DisposeAsync();
         }
 
 

@@ -23,7 +23,10 @@ builder.Services.AddCors(options =>
 });
 
 // Add SignalR services
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.MaximumReceiveMessageSize = 256 * 1024; // Set to 256 KB to accommodate your message size
+});
 
 // Add support for serving Blazor WebAssembly static files
 builder.Services.AddRazorComponents();
