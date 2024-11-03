@@ -10,31 +10,51 @@ namespace RmlEditorWeb.Services
     {
         private readonly HubConnection _hubConnection;
 
-        public event Action<string> OnMessageReceived;
+        public event Action<CompletedRender> OnRenderResultReceived;
+
+        public event Action<CompletedRender> OnServerErrorReceived;
 
         public RenderService(NavigationManager navigationManager)
         {
-            // Assuming the server and client are hosted on the same domain.
-            // Adjust the URL if hosted separately.
             _hubConnection = new HubConnectionBuilder()
                 .WithUrl($"{navigationManager.BaseUri}renderHub")
                 .WithAutomaticReconnect()
                 .Build();
 
-            _hubConnection.On<string>("ReceiveMessage", (message) =>
+            // Set up listener for "ReceiveRenderResult" from the server
+            _hubConnection.On<SmartResponse<CompletedRender>>("ReceiveRenderResult", (renderResult) =>
             {
-                OnMessageReceived?.Invoke(message);
+                OnRenderResultReceived?.Invoke(renderResult.Data);
+            });
+            _hubConnection.On<SmartResponse<CompletedRender>>("ErrorMessageReceived", (renderResult) =>
+            {
+                OnRenderResultReceived?.Invoke(renderResult.Data);
             });
         }
 
         public async Task StartAsync()
         {
-            await _hubConnection.StartAsync();
+            if (_hubConnection.State != HubConnectionState.Connected)
+            {
+                await _hubConnection.StartAsync();
+            }
         }
-
+        public async Task RenderReceiptAsync(SmartRequest<RenderRequest> renderRequest)
+        {
+            if (_hubConnection.State == HubConnectionState.Connected)
+            {
+                await _hubConnection.SendAsync("RenderReceipt", renderRequest);
+            }
+        }
         public async ValueTask DisposeAsync()
         {
+            if (_hubConnection.State == HubConnectionState.Connected)
+            {
+                await _hubConnection.StopAsync();
+            }
             await _hubConnection.DisposeAsync();
         }
     }
+
+
 }

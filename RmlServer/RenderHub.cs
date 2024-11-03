@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using RmlCommon.ServerModels;
 using RmlCommon;
-using System.Threading.Tasks;
 using ThreeTwoSix.ReceiptRenderer;
+using System.Text.Json;
+using RmlCommon.ServerModels;
 using ZXing;
 
 namespace RmlServer
@@ -11,7 +11,7 @@ namespace RmlServer
     public class RenderHub : Hub
     {
 
-        private readonly ReceiptRenderingService _receiptRenderingService;
+        private ReceiptRenderingService _receiptRenderingService;
 
         public RenderHub()
         {
@@ -31,6 +31,50 @@ namespace RmlServer
 
             await base.OnConnectedAsync();
         }
+
+
+        public async Task RenderReceipt(SmartRequest<RenderRequest> renderRequest)
+        {
+            try
+            {
+                // Validate the receipt data
+                if (renderRequest?.Data == null)
+                {
+                    await SendErrorResponse("Invalid receipt data.");
+                    return;
+                }
+
+                // Render the receipt based on the request data
+                byte[] renderedReceipt = renderRequest.Data.OneBitPng
+                    ? _receiptRenderingService.RenderOneBitPng(renderRequest.Data.BodyContents)
+                    : _receiptRenderingService.Render(renderRequest.Data.BodyContents, renderRequest.Data.MimeType);
+
+                var renderResult = new SmartResponse<CompletedRender>
+                {
+                    Data = new CompletedRender(Guid.NewGuid(), renderedReceipt),
+                    CreatedOn = DateTimeOffset.UtcNow
+                };
+
+                await Clients.Caller.SendAsync("ReceiveRenderResult", renderResult);
+            }
+            catch (Exception ex)
+            {
+                await SendErrorResponse(ex.ToString());
+            }
+        }
+
+        private async Task SendErrorResponse(string message)
+        {
+            var errorResult = new SmartResponse<CompletedRender>
+            {
+                CreatedOn = DateTimeOffset.UtcNow,
+                Error = message
+            };
+            await Clients.Caller.SendAsync("ErrorMessageReceived", errorResult);
+        }
+
+
+
     }
 
 }

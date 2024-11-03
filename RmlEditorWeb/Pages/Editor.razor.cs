@@ -14,7 +14,7 @@ using RmlEditorWeb.Services;
 
 namespace RmlEditorWeb.Pages
 {
-    public partial class Editor
+    public partial class Editor : IAsyncDisposable
     {
         private MonacoEditor? monacoEditorRef;
 
@@ -32,9 +32,11 @@ namespace RmlEditorWeb.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            RenderService.OnRenderResultReceived += HandleRenderResultReceived;
+            RenderService.OnServerErrorReceived += HandleServerErrorReceived;
 
         }
-        
+
         private string InitialCode = "";
 
         public string CurrentCode { get; set; } = string.Empty;
@@ -48,7 +50,6 @@ namespace RmlEditorWeb.Pages
         public string RenderTime { get; set; } = "UnRendered";
 
         public string GetCodeTime { get; set; } = "UnRendered";
-
 
         private async Task SelectEditorType()
         {
@@ -114,12 +115,21 @@ namespace RmlEditorWeb.Pages
             }
         }
 
+        private string ErrorMessage;
 
-
-
-
-
-
+        private string RenderedImageData = string.Empty;
+        
+        private void HandleRenderResultReceived(CompletedRender result)
+        {
+            RenderedImageData = Convert.ToBase64String(result.Receipt);
+            InvokeAsync(StateHasChanged);
+        }
+        private void HandleServerErrorReceived(CompletedRender error)
+        {
+            // Handle error from server
+            ErrorMessage = "An error occurred during rendering.";
+            InvokeAsync(StateHasChanged);
+        }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -131,29 +141,8 @@ namespace RmlEditorWeb.Pages
             await base.OnAfterRenderAsync(firstRender);
         }
 
-
-
-
-        ////TODO Implement tha method to show and then Toggle Valid render ready with minimum template
-
-        private string RenderedImageData = string.Empty;
-
-
-        private async Task HandleCodeChanged(string updatedCode)
-        {
-            // Handle the code change (e.g., save to database, update UI, etc.)
-            Console.WriteLine("Code updated: " + updatedCode);
-            // You can add additional logic here as needed
-        }
-
-        private async Task HandleValidation(bool isValid)
-        {
-            // Handle the validation status (e.g., display validation messages)
-            Console.WriteLine("Is code valid: " + isValid);
-            // You can add additional logic here as needed
-        }
-
-
+        [Inject]
+        public RenderService RenderHubService { get; set; }
 
         public async Task RenderImageAsync()
         {
@@ -175,12 +164,11 @@ namespace RmlEditorWeb.Pages
 
                     var request = new SmartRequest<RenderRequest>
                     {
-                        Data = renderRequest,
+                        Data = renderRequest
                     };
 
-                    // Serialize the request object to JSON
-                    var jsonRequest = JsonSerializer.Serialize(request);
-
+                    await RenderHubService.RenderReceiptAsync(request);
+                    
                     // Send the request to the SignalR hub method "RenderRequest"
 
                     Snackbar.Add("Render request sent to the server.", Severity.Info);
@@ -195,6 +183,15 @@ namespace RmlEditorWeb.Pages
                 Snackbar.Add($"{ex.Message}", Severity.Error);
             }
         }
+
+        public async ValueTask DisposeAsync()
+        {
+            RenderService.OnRenderResultReceived -= HandleRenderResultReceived;
+            RenderService.OnServerErrorReceived -= HandleServerErrorReceived;
+
+            await RenderService.DisposeAsync();
+        }
+
 
     }
 }

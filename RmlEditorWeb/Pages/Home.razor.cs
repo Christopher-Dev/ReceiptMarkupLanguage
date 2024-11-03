@@ -11,7 +11,6 @@ namespace RmlEditorWeb.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            RenderService.OnMessageReceived += HandleMessageReceived;
 
             // Start the SignalR connection
             await RenderService.StartAsync();
@@ -30,7 +29,6 @@ namespace RmlEditorWeb.Pages
 
         public void Dispose()
         {
-            RenderService.OnMessageReceived -= HandleMessageReceived;
         }
     }
 }
